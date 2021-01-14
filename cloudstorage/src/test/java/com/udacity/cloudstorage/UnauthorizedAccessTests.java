@@ -8,11 +8,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class CloudStorageApplicationTests {
+class UnauthorizedAccessTests {
 
 	@LocalServerPort
 	private int port;
-
 	private WebDriver driver;
 
 	@BeforeAll
@@ -33,9 +32,15 @@ class CloudStorageApplicationTests {
 	}
 
 	@Test
-	public void getLoginPage() {
-		driver.get("http://localhost:" + this.port + "/login");
+	public void unauthorizedUserIsRedirectedToLoginPage() {
+		driver.get("http://localhost:" + this.port + "/home");
 		Assertions.assertEquals("Login", driver.getTitle());
+	}
+
+	@Test
+	public void unauthorizedUserCanAccessSignupPage() {
+		driver.get("http://localhost:" + this.port + "/signup");
+		Assertions.assertEquals("Sign Up", driver.getTitle());
 	}
 
 }

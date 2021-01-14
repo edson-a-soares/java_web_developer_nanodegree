@@ -9,15 +9,15 @@
         <title>Login</title>
     </head>
     <body class="p-3 mb-2 bg-light text-black">
-        <div class="container justify-content-center w-25 p-3" style="background-color: #eeeeee; margin-top: 5em;">
+        <div id="login-form-container" class="container justify-content-center w-25 p-3" style="background-color: #eeeeee; margin-top: 5em;">
             <h1 class="display-5">Login</h1>
             <form th:action="@{/login}" th:object="${model}" action="#" method="POST">
 
-                <div th:if="${authenticationError}" class="alert alert-danger">
+                <div id="invalid-credentials-message" th:if="${authenticationError}" class="alert alert-danger">
                     Invalid username or password.
                 </div>
 
-                <div th:if="${logoutSuccess}" class="alert alert-success">
+                <div id="success-logout" th:if="${logoutSuccess}" class="alert alert-success">
                     You have been logged out.
                 </div>
 
@@ -29,7 +29,7 @@
                     <label for="inputPassword">Password</label>
                     <input type="password" class="form-control" name="password" id="inputPassword" placeholder="Enter Password" maxlength="20" required>
                 </div>
-                <button type="submit" class="btn btn-primary">Login</button>
+                <button type="submit" id="login-submit-button" class="btn btn-primary">Login</button>
             </form>
 
             <div class="form-group" style="margin-top: 0.5em;">

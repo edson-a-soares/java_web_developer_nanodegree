@@ -29,13 +29,13 @@ public class SignupController {
         String signupError = null;
 
         if (!userService.isUsernameAvailable(user.getUsername()))
-            signupError = "The username already exists.";
+            signupError = "The username '" + user.getUsername() + "' already exists.";
 
         if (signupError == null) {
             int rowsAdded = userService.createUser(user);
-            if (rowsAdded < 0) {
+            if (rowsAdded < 0)
                 signupError = "There was an error signing you up. Please try again.";
-            }
+
         }
 
         model.addAttribute("signupSuccess", true);
