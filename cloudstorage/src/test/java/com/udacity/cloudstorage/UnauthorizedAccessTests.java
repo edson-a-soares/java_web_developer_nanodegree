@@ -32,8 +32,14 @@ class UnauthorizedAccessTests {
 	}
 
 	@Test
-	public void unauthorizedUserIsRedirectedToLoginPage() {
+	public void unauthorizedAccessIsRedirectedToLoginPage() {
 		driver.get("http://localhost:" + this.port + "/home");
+		Assertions.assertEquals("Login", driver.getTitle());
+	}
+
+	@Test
+	public void unauthorizedUserCanAccessLoginPage() {
+		driver.get("http://localhost:" + this.port + "/login");
 		Assertions.assertEquals("Login", driver.getTitle());
 	}
 

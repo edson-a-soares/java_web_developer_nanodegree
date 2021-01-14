@@ -13,8 +13,8 @@ class LoginTests {
 	@LocalServerPort
 	private int port;
 	private WebDriver driver;
-	private LoginForm loginForm;
-	private SignupForm signupForm;
+	private LoginForm login;
+	private SignupForm signup;
 
 	@BeforeAll
 	static void beforeAll() {
@@ -24,8 +24,8 @@ class LoginTests {
 	@BeforeEach
 	public void beforeEach() {
 		this.driver = new ChromeDriver();
-		loginForm 	= new LoginForm(driver);
-		signupForm 	= new SignupForm(driver);
+		login 		= new LoginForm(driver);
+		signup 		= new SignupForm(driver);
 	}
 
 	@AfterEach
@@ -34,38 +34,46 @@ class LoginTests {
 			driver.quit();
 	}
 
-	@Test
-	public void loginFailure() {
+	private boolean tryLogin(String username, String password) {
 		driver.get("http://localhost:" + this.port + "/login");
 
-		loginForm.setUsername("harry.potter");
-		loginForm.setPassword("gryffindor");
-		loginForm.submit();
+		login.setUsername(username);
+		login.setPassword(password);
+		login.submit();
 
-		Assertions.assertFalse(loginForm.worked());
+		return login.success();
+	}
 
+	private boolean tryCreateUser(String firstName, String lastName, String username, String password) {
+		driver.get("http://localhost:" + this.port + "/signup");
+
+		signup.setUsername(username);
+		signup.setPassword(password);
+		signup.setLastName(firstName);
+		signup.setFirstName(lastName);
+		signup.submit();
+
+		return signup.success();
 	}
 
 	@Test
-	public void createUserAndLoginWithSuccess() {
-		driver.get("http://localhost:" + this.port + "/signup");
+	public void nonexistentUserLoginFailure() {
+		Assertions.assertFalse(tryLogin("harry.potter", "gryffindor"));
+	}
 
-		signupForm.setUsername("harry.potter");
-		signupForm.setPassword("gryffindor");
-		signupForm.setLastName("Harry");
-		signupForm.setFirstName("Potter");
+	@Test
+	public void loginWithSuccess() {
+		Assertions.assertTrue(
+			tryCreateUser(
+			"Harry",
+			"Potter",
+			"harry.potter",
+			"gryffindor"
+			)
+		);
 
-		signupForm.submit();
-		Assertions.assertTrue(signupForm.worked());
-
-		driver.get("http://localhost:" + this.port + "/login");
-
-		loginForm.setUsername("harry.potter");
-		loginForm.setPassword("gryffindor");
-		loginForm.submit();
-
-		Assertions.assertTrue(loginForm.worked());
-
+		Assertions.assertTrue(tryLogin("harry.potter", "gryffindor"));
+		Assertions.assertEquals("Home", driver.getTitle());
 	}
 
 }

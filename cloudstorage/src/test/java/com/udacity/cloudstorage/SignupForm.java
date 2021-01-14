@@ -1,5 +1,6 @@
 package com.udacity.cloudstorage;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -22,8 +23,8 @@ public class SignupForm {
     @FindBy(id = "signup-submit-button")
     private WebElement submitButton;
 
-    @FindBy(id = "signup-success-message")
-    private WebElement successMessage;
+    @FindBy(id = "signup-form-container")
+    private WebElement formContainer;
 
     public SignupForm(WebDriver driver) {
         PageFactory.initElements(driver, this);
@@ -53,8 +54,28 @@ public class SignupForm {
         passwordField.sendKeys(password);
     }
 
-    public boolean worked() {
-        return successMessage.isDisplayed();
+    public boolean success() {
+        return !hasErrorMessage() && hasSuccessMessage();
+    }
+
+    private boolean hasErrorMessage() {
+        boolean result = false;
+        try {
+            result = formContainer.findElements(By.id("signup-error-message")).size() != 0;
+
+        } catch (Exception ignored) {}
+
+        return result;
+    }
+
+    private boolean hasSuccessMessage() {
+        boolean result = false;
+        try {
+            result = formContainer.findElements(By.id("signup-success-message")).size() != 0;
+
+        } catch (Exception ignored) {}
+
+        return result;
     }
 
 }

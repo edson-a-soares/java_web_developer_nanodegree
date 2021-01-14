@@ -23,6 +23,7 @@ public class LoginForm {
     @FindBy(id = "login-submit-button")
     private WebElement submitButton;
 
+
     public LoginForm(WebDriver driver) {
         PageFactory.initElements(driver, this);
     }
@@ -41,17 +42,19 @@ public class LoginForm {
         passwordField.sendKeys(password);
     }
 
-    public boolean worked() {
-        return !pageTitle.getText().equals("Login") && !hasErrorMessage();
+    public boolean success() {
+        return !hasErrorMessage();
     }
 
     private boolean hasErrorMessage() {
-        boolean result = false;
+        boolean hasError = false;
         try {
-            result = formContainer.findElements(By.id("invalid-credentials-message")).size() != 0;
+            hasError = formContainer.findElements(By.id("invalid-credentials-message")).size() != 0;
+
         } catch (Exception ignored) {}
 
-        return result;
+        return hasError;
     }
+
 
 }

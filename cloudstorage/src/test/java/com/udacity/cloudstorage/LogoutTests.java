@@ -13,8 +13,8 @@ class LogoutTests {
 	@LocalServerPort
 	private int port;
 	private WebDriver driver;
-	private LoginForm loginForm;
-	private SignupForm signupForm;
+	private LoginForm login;
+	private SignupForm signup;
 
 	@BeforeAll
 	static void beforeAll() {
@@ -24,8 +24,8 @@ class LogoutTests {
 	@BeforeEach
 	public void beforeEach() {
 		this.driver = new ChromeDriver();
-		loginForm 	= new LoginForm(driver);
-		signupForm 	= new SignupForm(driver);
+		login = new LoginForm(driver);
+		signup = new SignupForm(driver);
 	}
 
 	@AfterEach
@@ -35,31 +35,30 @@ class LogoutTests {
 	}
 
 	@Test
-	public void createUserAndLoginWithSuccess() {
+	public void logoutWithSuccess() {
 		driver.get("http://localhost:" + this.port + "/signup");
 
-		signupForm.setUsername("harry.potter");
-		signupForm.setPassword("gryffindor");
-		signupForm.setLastName("Harry");
-		signupForm.setFirstName("Potter");
+		signup.setUsername("harry.potter");
+		signup.setPassword("gryffindor");
+		signup.setLastName("Harry");
+		signup.setFirstName("Potter");
 
-		signupForm.submit();
-		Assertions.assertTrue(signupForm.worked());
+		signup.submit();
+		Assertions.assertTrue(signup.success());
 
 		driver.get("http://localhost:" + this.port + "/login");
 
-		loginForm.setUsername("harry.potter");
-		loginForm.setPassword("gryffindor");
-		loginForm.submit();
+		login.setUsername("harry.potter");
+		login.setPassword("gryffindor");
+		login.submit();
 
-		Assertions.assertTrue(loginForm.worked());
+		Assertions.assertTrue(login.success());
 
 		driver.get("http://localhost:" + this.port + "/home");
 		Assertions.assertEquals("Home", driver.getTitle());
 
 		driver.get("http://localhost:" + this.port + "/logout");
 		Assertions.assertNotSame("Home", driver.getTitle());
-
 	}
 
 }
