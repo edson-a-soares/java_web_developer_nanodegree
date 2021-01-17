@@ -1,15 +1,14 @@
 package com.udacity.cloudstorage.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
-
 import javax.crypto.*;
 import java.util.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.InvalidKeyException;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import org.springframework.stereotype.Service;
 
 @Service
 public class EncryptionService {

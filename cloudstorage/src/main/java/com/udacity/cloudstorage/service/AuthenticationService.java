@@ -1,5 +1,6 @@
 package com.udacity.cloudstorage.service;
 
+import java.util.ArrayList;
 import com.udacity.cloudstorage.model.User;
 import org.springframework.stereotype.Service;
 import org.springframework.security.core.Authentication;
@@ -7,8 +8,6 @@ import org.springframework.security.core.AuthenticationException;
 import com.udacity.cloudstorage.infrastructure.mapper.UserMapper;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-
-import java.util.ArrayList;
 
 @Service
 public class AuthenticationService implements AuthenticationProvider {

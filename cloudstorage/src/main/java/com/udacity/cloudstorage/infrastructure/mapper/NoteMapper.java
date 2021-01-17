@@ -7,7 +7,7 @@ import com.udacity.cloudstorage.model.Note;
 @Mapper
 public interface NoteMapper {
 
-    @Insert("DELETE FROM NOTES WHERE id = #{id}")
+    @Delete("DELETE FROM NOTES WHERE id = #{id}")
     void delete(Integer id);
 
     @Select("SELECT * FROM NOTES WHERE userid = #{UID} ORDER BY id DESC")

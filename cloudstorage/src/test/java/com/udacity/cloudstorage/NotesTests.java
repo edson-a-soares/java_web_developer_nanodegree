@@ -155,7 +155,7 @@ class NotesTests {
 		wait.until(
 			ExpectedConditions.numberOfElementsToBe(
 				By.xpath("//*[@id='userTable']/tbody/tr"),
-				initialNotesNumber
+				initialNotesNumber - 1
 			)
 		);
 	}

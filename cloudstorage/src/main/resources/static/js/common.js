@@ -13,7 +13,7 @@ $('.nav-link').click(function (event) {
     window.location.hash = $(event.target).attr("href");
 });
 
-$('#alertModal').on("response:modal", function (event, errorPage) {
+$('#alertModal').on("response:show", function (event, errorPage) {
     event.preventDefault();
     let html = $(errorPage);
     let message = html.filter('#resultMessageContent').html();

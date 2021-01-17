@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS FILES (
 );
 
 CREATE TABLE IF NOT EXISTS CREDENTIALS (
-    credentialid INT PRIMARY KEY auto_increment,
+    id INT PRIMARY KEY auto_increment,
     url VARCHAR(100),
     username VARCHAR (30),
     key VARCHAR,

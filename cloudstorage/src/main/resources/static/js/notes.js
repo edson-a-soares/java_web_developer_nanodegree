@@ -18,15 +18,15 @@ const Notes = function(fragment) {
             }
 
         }).done(function (response) {
-            $('#noteModal').trigger("notes:modal:close");
-            $('#alertModal').trigger("response:modal", response);
+            $('#noteModal').trigger("modal:close");
+            $('#alertModal').trigger("response:show", response);
             $('.alert-close').click(function () {
                 $('body').trigger("page:reload");
             });
 
         }).fail(function (xhr) {
-            $('#noteModal').trigger("notes:modal:close");
-            $('#alertModal').trigger("response:modal", xhr.responseText);
+            $('#noteModal').trigger("modal:close");
+            $('#alertModal').trigger("response:show", xhr.responseText);
 
         });
 
@@ -48,15 +48,15 @@ const Notes = function(fragment) {
             }
 
         }).done(function (response) {
-            $('#noteModal').trigger("notes:modal:close");
-            $('#alertModal').trigger("response:modal", response);
+            $('#noteModal').trigger("modal:close");
+            $('#alertModal').trigger("response:show", response);
             $('.alert-close').click(function () {
                 $('body').trigger("page:reload");
             });
 
         }).fail(function (xhr) {
-            $('#noteModal').trigger("notes:modal:close");
-            $('#alertModal').trigger("response:modal", xhr.responseText);
+            $('#noteModal').trigger("modal:close");
+            $('#alertModal').trigger("response:show", xhr.responseText);
 
         });
 
@@ -77,15 +77,15 @@ const Notes = function(fragment) {
             beforeSend: function() {}
 
         }).done(function (response) {
-            $('#noteModal').trigger("notes:modal:close");
-            $('#alertModal').trigger("response:modal", response);
+            $('#noteModal').trigger("modal:close");
+            $('#alertModal').trigger("response:show", response);
             $('.alert-close').click(function () {
                 $('body').trigger("page:reload");
             });
 
         }).fail(function (xhr) {
-            $('#noteModal').trigger("notes:modal:close");
-            $('#alertModal').trigger("response:modal", xhr.responseText);
+            $('#noteModal').trigger("modal:close");
+            $('#alertModal').trigger("response:show", xhr.responseText);
 
         });
 
@@ -117,7 +117,7 @@ function showNoteModal(noteId, noteTitle, noteDescription) {
 
     $('#noteModal')
         .modal('show')
-        .on("notes:modal:close", function (event) {
+        .on("modal:close", function (event) {
             event.preventDefault();
             $(this).modal('toggle');
 
