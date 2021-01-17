@@ -8,9 +8,6 @@ import org.openqa.selenium.support.PageFactory;
 
 public class LoginForm {
 
-    @FindBy(tagName = "title")
-    private WebElement pageTitle;
-
     @FindBy(id = "login-form-container")
     private WebElement formContainer;
 

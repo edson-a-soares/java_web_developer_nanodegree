@@ -3,7 +3,6 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
         <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/bootstrap.min.css}">
 
         <title>Home</title>
@@ -25,7 +24,7 @@
                 </nav>
                 <div class="tab-content" id="nav-tabContent">
                     <div class="tab-pane fade show active" id="nav-files" role="tabpanel" aria-labelledby="nav-files-tab">
-                        <form action="#" enctype="multipart/form-data" method="POST">
+                        <form th:action="@{/files}" th:object="${model}" action="#" enctype="multipart/form-data" method="POST">
                             <div class="container">
                                 <div class="row" style="margin: 1em;">
                                     <div class="col-sm-2">
@@ -49,19 +48,22 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
+                                <tr th:if="${files.empty}">
+                                    <td style="text-align:center;" colspan="2">No files available.</td>
+                                </tr>
+                                <tr th:each="file : ${files}">
                                     <td>
                                         <a target="_blank" class="btn btn-success">View</a>
                                         <a  class="btn btn-danger">Delete</a>
                                     </td>
-                                    <th scope="row">ExampleFile.txt</th>
+                                    <th scope="row"><span th:text="${file.name}">Name</span></th>
                                 </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="nav-notes" role="tabpanel" aria-labelledby="nav-notes-tab">
-                        <button style="margin: 0.25em;" type="button" class="btn btn-info float-right" onclick="showNoteModal()">
+                        <button id="add-note-button" style="margin: 0.25em;" type="button" class="btn btn-info float-right" onclick="showNoteModal()">
                             + Add a New Note
                         </button>
 
@@ -75,15 +77,26 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
+                                    <tr th:if="${notes.empty}">
+                                        <td style="text-align:center;" colspan="3">No notes available.</td>
+                                    </tr>
+                                    <tr th:each="note : ${notes}">
                                         <td>
-                                            <button type="button" class="btn btn-success">Edit</button>
-                                            <a class="btn btn-danger">Delete</a>
+                                            <button
+                                                type="button"
+                                                th:onclick="showNoteModal([[${note.id}]], [[${note.title}]], [[${note.description}]] )"
+                                                class="btn btn-success">Edit
+                                            </button>
+                                            <a
+                                                class="btn btn-danger"
+                                                th:onclick="deleteNote( [[${note.id}]] )">Delete
+                                            </a>
                                         </td>
-                                        <th scope="row">Example Note Title</th>
-                                        <td>Example Note Description </td>
+                                        <th scope="row"><span th:text="${note.title}">Title</span></th>
+                                        <td><span th:text="${note.description}">Note</span></td>
                                     </tr>
                                 </tbody>
+                                <input name="_csrf" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                             </table>
                         </div>
 
@@ -97,11 +110,11 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <form action="#" method="POST">
+                                        <form id="notes-form" th:action="@{/notes}" th:object="${model}" action="#" method="post">
                                             <input type="hidden" name="noteId" id="note-id">
                                             <div class="form-group">
                                                 <label for="note-title" class="col-form-label">Title</label>
-                                                <input type="text" name= "noteTitle" class="form-control" id="note-title" maxlength="20" required>
+                                                <input type="text" name= "noteTitle" class="form-control" id="note-title" maxlength="20" required autofocus>
                                             </div>
                                             <div class="form-group">
                                                 <label for="note-description" class="col-form-label">Description</label>
@@ -112,7 +125,8 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary" onclick="$('#noteSubmit').click();">Save changes</button>
+                                        <!--button type="button" class="btn btn-primary" onclick="$('#noteSubmit').click();">Save changes</button-->
+                                        <button id="save-note" type="button" class="btn btn-primary">Save changes</button>
                                     </div>
                                 </div>
                             </div>
@@ -134,15 +148,18 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td>
-                                        <button type="button" class="btn btn-success">Edit</button>
-                                        <a class="btn btn-danger">Delete</a>
-                                    </td>
-                                    <th scope="row">Example Credential URL</th>
-                                    <td>Example Credential Username</td>
-                                    <td>Example Credential Password</td>
-                                </tr>
+                                    <tr th:if="${credentials.empty}">
+                                        <td style="text-align:center;" colspan="4">No credentials available.</td>
+                                    </tr>
+                                    <tr th:each="credential : ${credentials}">
+                                        <td>
+                                            <button type="button" class="btn btn-success">Edit</button>
+                                            <a class="btn btn-danger">Delete</a>
+                                        </td>
+                                        <th scope="row"><span th:text="${credential.url}">URL</span></th>
+                                        <td><span th:text="${credential.username}">Username</span></td>
+                                        <td><span th:text="${credential.password}">Password</span></td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -157,7 +174,7 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <form action="#" method="POST">
+                                        <form th:action="@{/credentials}" th:object="${model}" action="#" method="POST">
                                             <input type="hidden" name="credentialId" id="credential-id">
                                             <div class="form-group">
                                                 <label for="note-title" class="col-form-label">URL</label>
@@ -183,31 +200,34 @@
                         </div>
                     </div>
                 </div>
+
+                <div id="alertModal" class="modal fade">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="alertModalLabel"></h5>
+                                <button type="button" class="alert-close close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+
+                            <div id="alertModalBody" class="modal-body"></div>
+                            <div class="modal-footer">
+                                <button id="close-alert-dialog" type="button" class="btn btn-default alert-close" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
-        <script th:src="@{/js/jquery-slim.min.js}"></script>
+        <!--script th:src="@{/js/jquery-slim.min.js}"></script-->
+        <script th:src="@{/js/jquery-3.5.1-min.js}"></script>
         <script th:src="@{/js/popper.min.js}"></script>
         <script th:src="@{/js/bootstrap.min.js}"></script>
-
-        <!--For opening the note modal-->
-        <script type="text/javascript">
-            // For opening the note modal
-            function showNoteModal(noteId, noteTitle, noteDescription) {
-                $('#note-id').val(noteId ? noteId : '');
-                $('#note-title').val(noteTitle ? noteTitle : '');
-                $('#note-description').val(noteDescription ? noteDescription : '');
-                $('#noteModal').modal('show');
-            }
-
-            // For opening the credentials modal
-            function showCredentialModal(credentialId, url, username, password) {
-                $('#credential-id').val(credentialId ? credentialId : '');
-                $('#credential-url').val(url ? url : '');
-                $('#credential-username').val(username ? username : '');
-                $('#credential-password').val(password ? password : '');
-                $('#credentialModal').modal('show');
-            }
-        </script>
+        <script th:src="@{/js/common.js}"></script>
+        <script th:src="@{/js/notes.js}"></script>
+        <script th:src="@{/js/application.js}"></script>
     </body>
 </html>
