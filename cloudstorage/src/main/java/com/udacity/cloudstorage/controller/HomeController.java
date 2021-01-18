@@ -1,8 +1,8 @@
 package com.udacity.cloudstorage.controller;
 
-import java.util.ArrayList;
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
+import com.udacity.cloudstorage.service.FileService;
 import com.udacity.cloudstorage.service.UserService;
 import com.udacity.cloudstorage.service.NoteService;
 import org.springframework.security.core.Authentication;
@@ -16,15 +16,18 @@ public class HomeController {
 
     private final UserService users;
     private final NoteService notes;
+    private final FileService files;
     private final CredentialService credentials;
 
     public HomeController(
         UserService users,
         NoteService notes,
+        FileService files,
         CredentialService credentials
     ) {
         this.users = users;
         this.notes = notes;
+        this.files = files;
         this.credentials = credentials;
     }
 
@@ -38,7 +41,7 @@ public class HomeController {
              .toString();
 
             model.addAttribute("notes", notes.allBy(UID));
-            model.addAttribute("files", new ArrayList<>());
+            model.addAttribute("files", files.allBy(UID));
             model.addAttribute("credentials", credentials.allBy(UID));
 
         } catch (Exception ignored) {

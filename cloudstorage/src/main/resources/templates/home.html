@@ -9,7 +9,7 @@
     </head>
     <body class="p-3 mb-2 bg-light text-black">
         <div class="container">
-            <span name="_csrf" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"></span>
+            <span name="_csrf" type="hidden" th:value="${_csrf.token}"></span>
             <div id="logoutDiv">
                 <form action="#" th:action="@{/logout}" method="POST">
                     <button type="submit" class="btn btn-secondary float-right">Logout</button>
@@ -25,17 +25,17 @@
                 </nav>
                 <div class="tab-content" id="nav-tabContent">
                     <div class="tab-pane fade show active" id="nav-files" role="tabpanel" aria-labelledby="nav-files-tab">
-                        <form th:action="@{/files}" th:object="${model}" action="#" enctype="multipart/form-data" method="POST">
+                        <form id="files-form" th:action="@{/files}" action="#">
                             <div class="container">
                                 <div class="row" style="margin: 1em;">
                                     <div class="col-sm-2">
                                         <label for="fileUpload">Upload a New File:</label>
                                     </div>
                                     <div class="col-sm-6">
-                                        <input type="file" class="form-control-file" id="fileUpload" name="fileUpload">
+                                        <input type="file" class="form-control-file" id="fileUpload" name="file">
                                     </div>
                                     <div class="col-sm-4">
-                                        <button type="submit" class="btn btn-dark">Upload</button>
+                                        <button id="upload-file" type="button" class="btn btn-dark">Upload</button>
                                     </div>
                                 </div>
                             </div>
@@ -54,8 +54,8 @@
                                 </tr>
                                 <tr th:each="file : ${files}">
                                     <td>
-                                        <a target="_blank" class="btn btn-success">View</a>
-                                        <a  class="btn btn-danger">Delete</a>
+                                        <a target="_blank" th:href="@{'/files/' + ${file.id}}" class="btn btn-success">View</a>
+                                        <a class="btn btn-danger" th:onclick="deleteFile( [[${file.id}]] )">Delete</a>
                                     </td>
                                     <th scope="row"><span th:text="${file.name}">Name</span></th>
                                 </tr>
@@ -107,7 +107,7 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <form id="notes-form" th:action="@{/notes}" th:object="${model}" action="#" method="post">
+                                        <form id="notes-form" th:action="@{/notes}">
                                             <input type="hidden" name="noteId" id="note-id">
                                             <div class="form-group">
                                                 <label for="note-title" class="col-form-label">Title</label>
@@ -177,7 +177,7 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <form id="credentials-form" th:action="@{/credentials}" th:object="${model}" action="#" method="POST">
+                                        <form id="credentials-form" th:action="@{/credentials}" action="#">
                                             <input type="hidden" name="credentialId" id="credential-id">
                                             <div class="form-group">
                                                 <label for="note-title" class="col-form-label">URL</label>
@@ -202,7 +202,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div id="alertModal" class="modal fade">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -220,15 +219,14 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
 
         <script th:src="@{/js/jquery-3.5.1-min.js}"></script>
         <script th:src="@{/js/popper.min.js}"></script>
         <script th:src="@{/js/bootstrap.min.js}"></script>
-
         <script th:src="@{/js/common.js}"></script>
+        <script th:src="@{/js/files.js}"></script>
         <script th:src="@{/js/notes.js}"></script>
         <script th:src="@{/js/credentials.js}"></script>
     </body>

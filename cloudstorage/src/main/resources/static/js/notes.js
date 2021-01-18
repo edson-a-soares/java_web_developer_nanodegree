@@ -139,12 +139,14 @@ function showNoteModal(noteId, noteTitle, noteDescription) {
             }
         );
 
+        object._csrf = $('input[name ="_csrf"]').val();
         $('#noteModal').trigger("note:add", [object, form.attr('action')]);
     });
 
 }
 
 function deleteNote(noteId) {
+
     const data = {
         _csrf : $('input[name ="_csrf"]').val(),
         noteId : noteId
@@ -153,6 +155,7 @@ function deleteNote(noteId) {
     const fragment = $('#notes-form').attr('action');
     const notes = Notes(fragment);
     notes.remove(data);
+
 }
 
 

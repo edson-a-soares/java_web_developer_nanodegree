@@ -35,8 +35,6 @@ const Credentials = function(fragment) {
     function edit (data) {
         const defer = $.Deferred();
 
-        console.log(data);
-
         $.ajax({
             url: `${endpoint}/${data.credentialId}`,
             type: 'put',
@@ -148,7 +146,6 @@ function addCredentialModal() {
 }
 
 function editCredentialModal(credentialId, url, username, password) {
-
     const data = {
         _csrf : $('input[name ="_csrf"]').val(),
         credentialId : credentialId
@@ -166,7 +163,6 @@ function editCredentialModal(credentialId, url, username, password) {
 
     $('#credentialModal')
         .modal('show');
-
 }
 
 function deleteCredential(credentialId) {
@@ -201,5 +197,6 @@ $('#save-credential').click(function () {
         }
     );
 
+    object._csrf = $('input[name ="_csrf"]').val()
     $('#credentialModal').trigger("credentials:add", [object, form.attr('action')]);
 });
