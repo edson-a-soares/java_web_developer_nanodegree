@@ -11,6 +11,11 @@ public class File {
 
     public File() {}
 
+    public File(Integer id, Integer userId) {
+        this.id = id;
+        this.userId = userId;
+    }
+
     public File(String name, long size, String contentType, byte[] data, Integer userId) {
         this.name = name;
         this.data = data;

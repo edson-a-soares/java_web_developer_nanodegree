@@ -3,6 +3,8 @@ package com.udacity.cloudstorage.controller;
 import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
+
+import org.apache.tomcat.util.buf.UDecoder;
 import org.springframework.ui.Model;
 import org.springframework.http.MediaType;
 import org.springframework.http.HttpStatus;
@@ -44,9 +46,10 @@ public class CredentialController {
 
     @ResponseBody
     @GetMapping("{credentialId}")
-    public ResponseEntity<String> decryptCredential(@PathVariable Integer credentialId) {
+    public ResponseEntity<String> decryptCredential(@PathVariable Integer credentialId, Authentication authentication) {
         try {
-            return new ResponseEntity<>(credentials.decryptCredential(credentialId), HttpStatus.OK);
+            var UID = users.getUser(authentication.getName()).getUserId();
+            return new ResponseEntity<>(credentials.decryptCredential(new Credential(credentialId, UID)), HttpStatus.OK);
 
         } catch (Exception ignored) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -116,12 +119,14 @@ public class CredentialController {
     public String removeView(
         HttpServletResponse response,
         @PathVariable Integer credentialId,
+        Authentication authentication,
         Model model
     ) {
         List<String> errors = new ArrayList<String>();
         model.addAttribute("success", true);
         try {
-            credentials.remove(credentialId);
+            var UID = users.getUser(authentication.getName()).getUserId();
+            credentials.remove(new Credential(credentialId, UID));
 
         } catch (Exception ignore) {
             errors.add("There was a server error. The credential was not removed.");

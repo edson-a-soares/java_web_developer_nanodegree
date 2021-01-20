@@ -7,14 +7,14 @@ import com.udacity.cloudstorage.model.Credential;
 @Mapper
 public interface CredentialMapper {
 
-    @Delete("DELETE FROM CREDENTIALS WHERE id = #{id}")
-    void delete(Integer id);
+    @Delete("DELETE FROM CREDENTIALS WHERE id = #{id} AND userid = #{userId}")
+    void delete(Credential credential);
 
     @Select("SELECT id, url, password, username, userid FROM CREDENTIALS WHERE userid = #{UID} ORDER BY id DESC")
     List<Credential> allFrom(String UID);
 
-    @Select("SELECT id, key, url, password, username, userid FROM CREDENTIALS WHERE id = #{id}")
-    Credential get(int id);
+    @Select("SELECT id, key, url, password, username, userid FROM CREDENTIALS WHERE id = #{id} AND userid = #{userId}")
+    Credential find(Credential credential);
 
     @Update("UPDATE CREDENTIALS SET url=#{url}, username=#{username}, password=#{password} WHERE id =#{id}")
     void update(Credential credential);

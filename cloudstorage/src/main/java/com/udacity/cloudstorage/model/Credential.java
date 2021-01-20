@@ -11,6 +11,11 @@ public class Credential {
 
     public Credential() {}
 
+    public Credential(Integer id, Integer userId) {
+        this.id = id;
+        this.userId = userId;
+    }
+
     public Credential(String url, String username, String password, Integer userId) {
         this.url = url;
         this.userId = userId;

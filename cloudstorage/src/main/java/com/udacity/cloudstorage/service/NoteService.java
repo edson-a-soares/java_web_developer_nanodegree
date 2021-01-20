@@ -18,8 +18,8 @@ public class NoteService {
         return notes.allFrom(UID);
     }
 
-    public void remove(Integer noteId) {
-        notes.delete(noteId);
+    public void remove(Note note) {
+        notes.delete(note);
     }
 
     public void add(Note note) {

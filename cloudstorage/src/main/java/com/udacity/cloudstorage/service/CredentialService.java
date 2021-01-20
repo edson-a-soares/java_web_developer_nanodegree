@@ -18,17 +18,17 @@ public class CredentialService {
         encryptor = encryptionService;
     }
 
-    public String decryptCredential(int credentialId) {
-        var credential = credentials.get(credentialId);
-        return encryptor.decryptValue(credential.getPassword(), credential.getKey());
+    public String decryptCredential(Credential credential) {
+        var found = credentials.find(credential);
+        return encryptor.decryptValue(found.getPassword(), found.getKey());
     }
 
     public List<Credential> allBy(String UID) {
         return credentials.allFrom(UID);
     }
 
-    public void remove(Integer credentialId) {
-        credentials.delete(credentialId);
+    public void remove(Credential credential) {
+        credentials.delete(credential);
     }
 
     public void add(Credential credential) {
@@ -50,7 +50,7 @@ public class CredentialService {
             return;
         }
 
-        var key = credentials.get(credential.getId()).getKey();
+        var key = credentials.find(credential).getKey();
         var rawPassword = credential.getPassword();
         credential.setPassword(encryptor.encryptValue(rawPassword, key));
 

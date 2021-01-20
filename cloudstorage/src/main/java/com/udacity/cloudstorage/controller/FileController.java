@@ -29,10 +29,10 @@ public class FileController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String uploadView(
-            HttpServletResponse response,
-            Authentication authentication,
-            @RequestParam(name = "file") MultipartFile multipartFile,
-            Model model
+        HttpServletResponse response,
+        Authentication authentication,
+        @RequestParam(name = "file") MultipartFile multipartFile,
+        Model model
     ) {
         List<String> errors = new ArrayList<String>();
 
@@ -83,10 +83,11 @@ public class FileController {
         @PathVariable Integer fileId
     ) {
         var UID = users.getUser(authentication.getName()).getUserId();
-        var file   = files.get(fileId);
-        if (file != null && file.getUserId().equals(UID)) {
+        var file   = files.get(new File(fileId, UID));
+        if (file != null) {
             return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(file.getContentType()))
+                .header("Content-Disposition", "attachment; filename=" + file.getName())
                 .body(new ByteArrayResource(file.getData()));
         }
 
@@ -95,14 +96,16 @@ public class FileController {
 
     @DeleteMapping(value = "/{fileId}")
     public String removeView(
+        Authentication authentication,
         HttpServletResponse response,
         @PathVariable Integer fileId,
         Model model
     ) {
+        var UID = users.getUser(authentication.getName()).getUserId();
         List<String> errors = new ArrayList<String>();
         model.addAttribute("success", true);
         try {
-            files.remove(fileId);
+            files.remove(new File(fileId, UID));
 
         } catch (Exception ignore) {
             errors.add("There was a server error. The file was not removed.");

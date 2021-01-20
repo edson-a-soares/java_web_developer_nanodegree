@@ -1,7 +1,7 @@
 ## SuperDuperDrive Cloud Storage
 
-Udacity's [Java Web Developer Nanodegree](https://www.udacity.com/course/java-developer-nanodegree--nd035) 
-[second course's project](https://github.com/udacity/nd035-c1-spring-boot-basics-examples), 
+Udacity [Java Web Developer Nanodegree](https://www.udacity.com/course/java-developer-nanodegree--nd035) 
+[second course](https://github.com/udacity/nd035-c1-spring-boot-basics-examples) project, 
 [SuperDuperDrive](https://github.com/udacity/nd035-c1-spring-boot-basics-project-starter).
 
 ****

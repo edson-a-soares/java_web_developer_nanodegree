@@ -9,6 +9,11 @@ public class Note {
 
     public Note() {}
 
+    public Note(Integer id, Integer userId) {
+        this.id = id;
+        this.userId = userId;
+    }
+
     public Note(Integer noteId, String title, String description, Integer userId) {
         this.id = noteId;
         this.title = title;

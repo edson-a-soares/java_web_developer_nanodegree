@@ -7,14 +7,14 @@ import com.udacity.cloudstorage.model.File;
 @Mapper
 public interface FileMapper {
 
-    @Delete("DELETE FROM FILES WHERE id = #{id}")
-    void delete(Integer id);
+    @Delete("DELETE FROM FILES WHERE id = #{id} AND userid = #{userId}")
+    void delete(File file);
 
-    @Select("SELECT id, name, content_type, size, data, userid FROM FILES WHERE id = #{id}")
+    @Select("SELECT id, name, content_type, size, data, userid FROM FILES WHERE id = #{id} AND userid = #{userId}")
     @Results({
         @Result(property = "contentType", column = "content_type")
     })
-    File get(int id);
+    File get(File file);
 
     @Select("SELECT id, name FROM FILES WHERE userid = #{userId} AND name = #{name}")
     File find(File file);

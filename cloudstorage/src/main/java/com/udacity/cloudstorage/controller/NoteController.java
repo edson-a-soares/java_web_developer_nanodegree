@@ -99,12 +99,14 @@ public class NoteController {
     public String removeView(
         HttpServletResponse response,
         @PathVariable Integer noteId,
+        Authentication authentication,
         Model model
     ) {
         List<String> errors = new ArrayList<String>();
         model.addAttribute("success", true);
         try {
-            notes.remove(noteId);
+            var UID = users.getUser(authentication.getName()).getUserId();
+            notes.remove(new Note(noteId, UID));
 
         } catch (Exception ignore) {
             errors.add("There was a server error. The note was not removed.");
