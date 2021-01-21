@@ -3,7 +3,6 @@ const Files = function(fragment) {
     let endpoint = baseurl(fragment);
 
     function add (data) {
-        const defer = $.Deferred();
 
         $.ajax({
             url: endpoint,
@@ -29,11 +28,9 @@ const Files = function(fragment) {
 
         });
 
-        return defer.promise();
     }
 
     function remove (data) {
-        const defer = $.Deferred();
 
         $.ajax({
             url: `${endpoint}/${data.fileId}`,
@@ -55,7 +52,6 @@ const Files = function(fragment) {
 
         });
 
-        return defer.promise();
     }
 
     return {
@@ -82,11 +78,12 @@ function deleteFile(fileId) {
     files.remove(data);
 }
 
-$('#files-form').on("files:add", function (event, data, fragment) {
-    event.preventDefault();
-    const files = Files(fragment);
-    files.store(data);
-});
+$('#files-form')
+    .on("files:add", function (event, data, fragment) {
+        event.preventDefault();
+        const files = Files(fragment);
+        files.store(data);
+    });
 
 $('#upload-file').click(function () {
     const form = $('#files-form');
