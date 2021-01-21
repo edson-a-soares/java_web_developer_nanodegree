@@ -3,8 +3,6 @@ package com.udacity.cloudstorage.controller;
 import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
-
-import org.apache.tomcat.util.buf.UDecoder;
 import org.springframework.ui.Model;
 import org.springframework.http.MediaType;
 import org.springframework.http.HttpStatus;
@@ -30,7 +28,7 @@ public class CredentialController {
     }
 
     public List<String> validate(Map<String, String> data) {
-        List<String> errors = new ArrayList<String>();
+        var errors = new ArrayList<String>();
 
         if (data.get("url").isEmpty())
             errors.add("URL must not be empty.");
@@ -44,18 +42,37 @@ public class CredentialController {
         return errors;
     }
 
+    /**
+     * It receives a credential ID, retrieve the credential from the storage, decrypts it, and returns it decrypted.
+     *
+     * @param credentialId The credential ID.
+     * @param authentication It allows the application to check the credential ownership based on the UID in the session.
+     * @return A decrypted credential for the caller.
+     */
     @ResponseBody
     @GetMapping("{credentialId}")
     public ResponseEntity<String> decryptCredential(@PathVariable Integer credentialId, Authentication authentication) {
         try {
             var UID = users.getUser(authentication.getName()).getUserId();
-            return new ResponseEntity<>(credentials.decryptCredential(new Credential(credentialId, UID)), HttpStatus.OK);
+            return new ResponseEntity<>(
+                credentials.decryptCredential(new Credential(credentialId, UID)),
+                HttpStatus.OK
+            );
 
         } catch (Exception ignored) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
+    /**
+     * It creates a new credential on the storage.
+     *
+     * @param response It allows the customization of the Http status code on the reply.
+     * @param authentication It allows the application to check the credential ownership based on the UID in the session.
+     * @param data The form sent from the caller with the credentials data.
+     * @param model The object returned to the HTML template.
+     * @return The name of the template that will process the reply.
+     */
     @PostMapping(consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public String createView(
         HttpServletResponse response,
@@ -85,6 +102,15 @@ public class CredentialController {
         return "result";
     }
 
+    /**
+     * It edits a credential data.
+     *
+     * @param response It allows the customization of the Http status code on the reply.
+     * @param authentication It allows the application to check the credential ownership based on the UID in the session.
+     * @param data The form sent from the caller with the credentials data.
+     * @param model The object returned to the HTML template.
+     * @return The name of the template that will process the reply.
+     */
     @PutMapping(value = "{credentialId}", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public String editView(
         HttpServletResponse response,
@@ -115,6 +141,15 @@ public class CredentialController {
         return "result";
     }
 
+    /**
+     * It removes a credential from the storage.
+     *
+     * @param response It allows the customization of the Http status code on the reply.
+     * @param credentialId The ID of the credential being removed.
+     * @param authentication It allows the application to check the credential ownership based on the UID in the session.
+     * @param model The object returned to the HTML template.
+     * @return The name of the template that will process the reply.
+     */
     @DeleteMapping(value = "{credentialId}")
     public String removeView(
         HttpServletResponse response,
@@ -122,7 +157,7 @@ public class CredentialController {
         Authentication authentication,
         Model model
     ) {
-        List<String> errors = new ArrayList<String>();
+        var errors = new ArrayList<String>();
         model.addAttribute("success", true);
         try {
             var UID = users.getUser(authentication.getName()).getUserId();
