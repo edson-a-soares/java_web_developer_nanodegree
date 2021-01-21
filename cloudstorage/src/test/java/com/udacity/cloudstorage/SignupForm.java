@@ -55,23 +55,13 @@ public class SignupForm {
     }
 
     public boolean success() {
-        return !hasErrorMessage() && hasSuccessMessage();
+        return !hasErrorMessage();
     }
 
     private boolean hasErrorMessage() {
         boolean result = false;
         try {
             result = formContainer.findElements(By.id("signup-error-message")).size() != 0;
-
-        } catch (Exception ignored) {}
-
-        return result;
-    }
-
-    private boolean hasSuccessMessage() {
-        boolean result = false;
-        try {
-            result = formContainer.findElements(By.id("signup-success-message")).size() != 0;
 
         } catch (Exception ignored) {}
 
