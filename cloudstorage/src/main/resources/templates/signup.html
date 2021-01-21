@@ -17,10 +17,6 @@
 
             <h1 class="display-5">Sign Up</h1>
             <form th:action="@{/signup}" th:object="${model}"  action="#" method="POST">
-
-                <div id="signup-success-message" th:if="${signupSuccess}" class="alert alert-success">
-                    You successfully signed up! Please continue to the <a th:href="@{/login}">login</a> page.
-                </div>
                 <div id="signup-error-message" th:if="${signupError}" class="alert alert-danger">
                     <span th:text="${signupError}"></span>
                 </div>
