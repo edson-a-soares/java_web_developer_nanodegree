@@ -10,7 +10,6 @@ $(document).ready(function(){
 
 $('.nav-link').click(function (event) {
     event.preventDefault();
-    event.stopPropagation();
     window.location.hash = $(event.target).attr("href");
 });
 
