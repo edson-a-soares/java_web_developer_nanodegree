@@ -1,22 +1,32 @@
-package com.udacity.pricing.domain.price;
+package com.udacity.pricing.entity;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.concurrent.ThreadLocalRandom;
 
-/**
- * Represents the price of a given vehicle, including currency.
- */
+@Entity
+@Table(name = "prices")
 public class Price {
 
-    private String currency;
-    private BigDecimal price;
+    @Id
+    @Column(name = "vehicleid", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long vehicleId;
 
+    @Column(name = "currency")
+    private String currency;
+
+    @Column(name = "price")
+    private BigDecimal price;
+
     public Price() {
+        currency = "USD";
     }
 
     public Price(String currency, BigDecimal price, Long vehicleId) {
-        this.currency = currency;
         this.price = price;
+        this.currency = currency;
         this.vehicleId = vehicleId;
     }
 
@@ -43,4 +53,14 @@ public class Price {
     public void setVehicleId(Long vehicleId) {
         this.vehicleId = vehicleId;
     }
+
+    @PrePersist
+    public void setRandomPrice() {
+        if (price != null)
+            return;
+
+        price = BigDecimal.valueOf(ThreadLocalRandom.current().nextDouble(1, 5))
+                .multiply(new BigDecimal(5000d)).setScale(2, RoundingMode.HALF_UP);
+    }
+
 }
