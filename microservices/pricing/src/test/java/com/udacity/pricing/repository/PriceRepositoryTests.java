@@ -1,4 +1,4 @@
-package com.udacity.pricing;
+package com.udacity.pricing.repository;
 
 import com.udacity.pricing.entity.Price;
 import org.junit.Assert;
