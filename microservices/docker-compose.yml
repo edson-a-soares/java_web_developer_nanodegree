@@ -41,9 +41,6 @@ services:
       - eureka
       - boogle
       - pricing
-    environment: 
-      - maps.endpoint = http://boogle:9191
-      - pricing.endpoint = http://pricing:8082
     image: vehiclesapi
     container_name: vehiclesapi
     ports:
