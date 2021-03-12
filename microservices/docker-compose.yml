@@ -4,53 +4,49 @@ services:
   eureka:
     build:
       context: ./eureka
-      dockerfile: eureka/Dockerfile
+      dockerfile: Dockerfile
     image: eureka
     container_name: eureka
     ports:
       - 8761:8761
-    networks:
-      - registry
+    network_mode: host
 
   pricing:
     build:
       context: ./pricing
-      dockerfile: pricing/Dockerfile
+      dockerfile: Dockerfile
     depends_on:
       - eureka
-    environment: 
-      - eureka.client.serviceUrl.defaultZone = http://eureka:8761/eureka/
     image: pricing
     container_name: pricing
     ports:
       - 8082:8082
-    networks:
-      - registry
+    network_mode: host
 
   boogle:
     build:
       context: ./maps
-      dockerfile: maps/Dockerfile
+      dockerfile: Dockerfile
     image: boogle
     container_name: boogle
     ports:
       - 9191:9191
+    network_mode: host
 
-#  vehicles:
-#    build:
-#      context: ./vehicles
-#      dockerfile: vehicles/Dockerfile
-#    depends_on:
-#      - eureka
-#      - boogle
-#      - pricing
-#    image: vehiclesapi
-#    container_name: vehicles-api
-#    ports:
-#      - 8080:8080
-#    networks:
-#      - registry
+  vehicles:
+    build:
+      context: ./vehicles
+      dockerfile: Dockerfile
+    depends_on:
+      - eureka
+      - boogle
+      - pricing
+    environment: 
+      - maps.endpoint = http://boogle:9191
+      - pricing.endpoint = http://pricing:8082
+    image: vehiclesapi
+    container_name: vehiclesapi
+    ports:
+      - 8080:8080
+    network_mode: host
 
-networks:
-  registry:
-    driver: bridge
