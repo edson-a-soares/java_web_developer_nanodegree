@@ -26,6 +26,8 @@ public class PetRepository implements PetRepositoryInterface {
     @Override
     @Transactional
     public Pet add(Pet pet) {
+
+        System.out.println("Owner ID.: " + pet.getOwner().getId());
         return manager.merge(pet);
     }
 

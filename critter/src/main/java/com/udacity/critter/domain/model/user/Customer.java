@@ -3,6 +3,7 @@ package com.udacity.critter.domain.model.user;
 import java.util.List;
 import javax.persistence.*;
 import com.udacity.critter.domain.model.pet.Pet;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -19,10 +20,10 @@ public class Customer {
     private String name;
 
     @Column(name = "notes")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String notes;
 
-    @OneToMany
-    @JoinColumn(name = "owner_id", nullable = false)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Pet> pets;
 
     @Column(name = "phone_number")

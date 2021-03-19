@@ -3,11 +3,9 @@ package com.udacity.critter.domain.model.pet;
 import javax.persistence.*;
 import java.time.LocalDate;
 import com.udacity.critter.domain.model.user.Customer;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "pets")
-@JsonIgnoreProperties(value = { "owner" })
 public class Pet {
 
     @Id
@@ -22,7 +20,7 @@ public class Pet {
     private PetType type;
 
     @ManyToOne
-    @JoinColumn(name = "owner_id", referencedColumnName = "customer_id", insertable = false, updatable = false)
+    @JoinColumn(name = "owner_id")
     private Customer owner;
 
     @Column(name = "notes")

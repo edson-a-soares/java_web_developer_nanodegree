@@ -18,6 +18,6 @@ CREATE TABLE IF NOT EXISTS pets (
     type VARCHAR(15) NOT NULL,
     birth_date DATE NOT NULL,
     notes TEXT,
-    owner_id BIGINT,
+    owner_id BIGINT NOT NULL,
     FOREIGN KEY (owner_id)  REFERENCES customers (customer_id)
 );

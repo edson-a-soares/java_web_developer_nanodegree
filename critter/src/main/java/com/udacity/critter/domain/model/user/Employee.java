@@ -1,5 +1,6 @@
 package com.udacity.critter.domain.model.user;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.udacity.critter.infrastructure.persistence.EmployeeSkillsAttributeConverter;
 
 import java.util.Set;
@@ -22,9 +23,10 @@ public class Employee {
     @Convert(converter = EmployeeSkillsAttributeConverter.class)
     private Set<EmployeeSkill> skills;
 
-    @ElementCollection(targetClass = DayOfWeek.class)
     @Enumerated(EnumType.STRING)
     @Column(name = "availability")
+    @ElementCollection(targetClass = DayOfWeek.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Set<DayOfWeek> daysAvailable;
 
     public long getId() {
