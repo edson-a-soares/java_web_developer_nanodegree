@@ -3,18 +3,16 @@ package com.udacity.critter.controller;
 import java.util.Set;
 import java.util.List;
 import java.time.DayOfWeek;
-
-import com.udacity.critter.domain.model.user.Customer;
-import com.udacity.critter.domain.model.user.Employee;
-import com.udacity.critter.domain.model.user.EmployeesRepositoryInterface;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import javax.persistence.EntityNotFoundException;
+import com.udacity.critter.domain.model.user.Customer;
+import com.udacity.critter.domain.model.user.Employee;
 import com.udacity.critter.application.representation.CustomerDTO;
 import com.udacity.critter.application.representation.EmployeeDTO;
 import com.udacity.critter.application.representation.EmployeeRequestDTO;
-
-import javax.persistence.EntityNotFoundException;
+import com.udacity.critter.domain.model.user.EmployeesRepositoryInterface;
 
 @RestController
 @RequestMapping("/user")

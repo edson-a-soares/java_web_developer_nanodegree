@@ -12,6 +12,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(value = { "pets" })
 public class PetDTO {
 
+    Collection<Pet> pets;
+
     private long id;
     private String name;
     private PetType type;
@@ -19,7 +21,7 @@ public class PetDTO {
     private String notes;
     private LocalDate birthDate;
 
-    Collection<Pet> pets;
+    public PetDTO() {}
 
     public PetDTO(Pet entity) {
         id = entity.getId();
@@ -99,7 +101,7 @@ public class PetDTO {
     }
 
     public Collection<PetDTO> asCollection() {
-        List<PetDTO>  asList = new ArrayList<PetDTO>();
+        List<PetDTO> asList = new ArrayList<PetDTO>();
 
         for (Pet entity : pets)
             asList.add(new PetDTO(entity));

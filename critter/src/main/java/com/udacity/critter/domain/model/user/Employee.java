@@ -1,11 +1,10 @@
 package com.udacity.critter.domain.model.user;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.udacity.critter.infrastructure.persistence.EmployeeSkillAttributeConverter;
-
 import java.util.Set;
 import javax.persistence.*;
 import java.time.DayOfWeek;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.udacity.critter.infrastructure.persistence.EmployeeSkillAttributeConverter;
 
 @Entity
 @Table(name = "employees")

@@ -1,7 +1,6 @@
 package com.udacity.critter.controller;
 
 import java.util.Collection;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import com.udacity.critter.domain.model.pet.Pet;
