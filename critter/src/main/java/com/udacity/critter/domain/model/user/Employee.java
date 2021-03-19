@@ -1,7 +1,7 @@
 package com.udacity.critter.domain.model.user;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.udacity.critter.infrastructure.persistence.EmployeeSkillsAttributeConverter;
+import com.udacity.critter.infrastructure.persistence.EmployeeSkillAttributeConverter;
 
 import java.util.Set;
 import javax.persistence.*;
@@ -20,7 +20,7 @@ public class Employee {
     private String name;
 
     @Column(name = "skill_set")
-    @Convert(converter = EmployeeSkillsAttributeConverter.class)
+    @Convert(converter = EmployeeSkillAttributeConverter.class)
     private Set<EmployeeSkill> skills;
 
     @Enumerated(EnumType.STRING)
