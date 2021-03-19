@@ -9,4 +9,5 @@ Below is the mapping for all nanodegree project's folders in the current reposit
 |:-------|:----------------|
 |**Course 2**|[SuperDuperDrive](cloudstorage)|
 |**Course 3**|[Car Website Backend System](microservices)|
+|**Course 4**|[Critter Chronologer](critter)|
 
