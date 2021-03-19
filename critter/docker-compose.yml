@@ -1,0 +1,32 @@
+version: '3.3'
+
+services:
+  database:
+    image: mysql:5.7
+    restart: on-failure
+    environment:
+      MYSQL_ROOT_PASSWORD: mysql
+      MYSQL_DATABASE: critter
+      MYSQL_USER: critter
+      MYSQL_PASSWORD: admin
+    ports:
+      - "33065:3306"
+    command:
+      - --table_definition_cache=100
+      - --performance_schema=0
+      - --default-authentication-plugin=mysql_native_password
+      - --innodb_use_native_aio=0
+    volumes:
+      - ./init:/docker-entrypoint-initdb.d
+
+#  application:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    depends_on:
+#      - database
+#    image: critter
+#    container_name: critter
+#    ports:
+#      - 8082:8082
+#    network_mode: host
