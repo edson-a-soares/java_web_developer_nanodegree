@@ -2,8 +2,6 @@ package com.udacity.critter.controller;
 
 import java.util.List;
 import java.util.Collection;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.udacity.critter.domain.model.schedule.Schedule;
 import com.udacity.critter.application.service.ScheduleService;
@@ -25,21 +23,17 @@ public class ScheduleController {
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody ScheduleDTO representation) {
-        try {
-            Schedule entity = schedules.create(
-                representation.asEntity(),
-                representation.getPetIds(),
-                representation.getEmployeeIds()
-            );
+    public ScheduleDTO create(@RequestBody ScheduleDTO representation) {
+        Schedule entity = new ScheduleDTO
+            .EntityBuilder()
+            .from(representation)
+            .build();
 
-            return ResponseEntity.status(HttpStatus.CREATED).body(new ScheduleDTO(entity));
-
-        } catch (Exception e) {
-            return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(e.getMessage());
-        }
+        Schedule schedule = schedules.create(entity, representation.getPetIds(), representation.getEmployeeIds());
+        return new ScheduleDTO
+            .RepresentationBuilder()
+            .from(schedule)
+            .build();
     }
 
     @GetMapping("/pet/{petId}")
@@ -55,7 +49,11 @@ public class ScheduleController {
     @GetMapping("/customer/{customerId}")
     public List<ScheduleDTO> getScheduleForCustomer(@PathVariable long customerId) {
         List<Schedule> list = schedules.findByCustomer(customerId);
-        return null;
+
+        return new ScheduleDTO
+            .CollectionBuilder()
+            .from(list)
+            .build();
     }
 
 }
