@@ -19,14 +19,14 @@ services:
     volumes:
       - ./init:/docker-entrypoint-initdb.d
 
-#  application:
-#    build:
-#      context: .
-#      dockerfile: Dockerfile
-#    depends_on:
-#      - database
-#    image: critter
-#    container_name: critter
-#    ports:
-#      - 8082:8082
-#    network_mode: host
+  application:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - database
+    image: critter
+    container_name: critter
+    ports:
+      - 8082:8082
+    network_mode: host

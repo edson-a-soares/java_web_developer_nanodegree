@@ -161,7 +161,7 @@ public class CritterFunctionalTest {
 
         //make a request that matches employee 1 or 2
         EmployeeRequestDTO er1 = new EmployeeRequestDTO();
-        er1.setDate(LocalDate.of(2019, 12, 25)); //wednesday
+        er1.setDate(LocalDate.of(2019, 12, 25)); // wednesday
         er1.setSkills(Sets.newHashSet(EmployeeSkill.PETTING));
 
         Set<Long> eIds1 = employeeController.findEmployeesForService(er1)
