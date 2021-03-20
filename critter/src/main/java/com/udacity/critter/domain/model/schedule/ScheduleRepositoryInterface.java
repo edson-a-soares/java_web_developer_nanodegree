@@ -6,8 +6,8 @@ public interface ScheduleRepositoryInterface {
 
     public Schedule add(Schedule schedule);
     public Collection<Schedule> list();
-    public Schedule findByPet(long id);
+    Collection<Schedule> findByPet(long id);
     public Collection<Schedule> findByCustomer(long id);
-    public Schedule findByEmployee(long id);
+    public Collection<Schedule> findByEmployee(long id);
 
 }

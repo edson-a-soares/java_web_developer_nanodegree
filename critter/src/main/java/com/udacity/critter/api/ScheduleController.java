@@ -18,8 +18,13 @@ public class ScheduleController {
     }
 
     @GetMapping
-    public Collection<Schedule> list() {
-        return schedules.list();
+    public List<ScheduleDTO> list() {
+        Collection<Schedule> list = schedules.list();
+
+        return new ScheduleDTO
+            .CollectionBuilder()
+            .from(list)
+            .build();
     }
 
     @PostMapping
@@ -38,21 +43,31 @@ public class ScheduleController {
 
     @GetMapping("/pet/{petId}")
     public List<ScheduleDTO> getScheduleForPet(@PathVariable long petId) {
-        throw new UnsupportedOperationException();
+        Collection<Schedule> schedules = this.schedules.findByPet(petId);
+
+        return new ScheduleDTO
+            .CollectionBuilder()
+            .from(schedules)
+            .build();
     }
 
     @GetMapping("/employee/{employeeId}")
     public List<ScheduleDTO> getScheduleForEmployee(@PathVariable long employeeId) {
-        throw new UnsupportedOperationException();
+        Collection<Schedule> schedules = this.schedules.findByEmployee(employeeId);
+
+        return new ScheduleDTO
+            .CollectionBuilder()
+            .from(schedules)
+            .build();
     }
 
     @GetMapping("/customer/{customerId}")
     public List<ScheduleDTO> getScheduleForCustomer(@PathVariable long customerId) {
-        List<Schedule> list = schedules.findByCustomer(customerId);
+        Collection<Schedule> schedules = this.schedules.findByCustomer(customerId);
 
         return new ScheduleDTO
             .CollectionBuilder()
-            .from(list)
+            .from(schedules)
             .build();
     }
 

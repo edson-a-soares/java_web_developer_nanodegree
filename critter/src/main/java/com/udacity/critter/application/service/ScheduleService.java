@@ -41,8 +41,16 @@ public class ScheduleService {
         return schedules.add(entity);
     }
 
-    public List<Schedule> findByCustomer(long id) {
-        return new ArrayList<Schedule>(schedules.findByCustomer(id));
+    public Collection<Schedule> findByPet(long id) {
+        return schedules.findByPet(id);
+    }
+
+    public Collection<Schedule> findByEmployee(long id) {
+        return schedules.findByEmployee(id);
+    }
+
+    public Collection<Schedule> findByCustomer(long id) {
+        return schedules.findByCustomer(id);
     }
 
 }

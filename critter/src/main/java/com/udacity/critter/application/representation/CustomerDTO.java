@@ -90,8 +90,10 @@ public class CustomerDTO {
             ModelMapper modelMapper = new ModelMapper();
             Customer entity = modelMapper.map(representation, Customer.class);
 
-            List<Pet> animals = new ArrayList<>(pets.findById(representation.getPetIds()));
-            entity.setPets(animals);
+            if (pets != null && !representation.getPetIds().isEmpty())
+                entity.setPets(new ArrayList<>(pets.findById(representation.getPetIds())));
+            else
+                entity.setPets(new ArrayList<>());
 
             return entity;
         }

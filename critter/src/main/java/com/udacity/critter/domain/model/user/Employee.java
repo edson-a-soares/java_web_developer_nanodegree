@@ -19,13 +19,24 @@ public class Employee {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "skill_set")
-    @Convert(converter = EmployeeSkillAttributeConverter.class)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @ElementCollection(targetClass = EmployeeSkill.class)
+    @Enumerated(EnumType.STRING)
+    @CollectionTable(
+        name = "employees_skills",
+        joinColumns = @JoinColumn(name = "employee_id")
+    )
+    @Column(name = "skill_name")
     private Set<EmployeeSkill> skills;
 
-    @Column(name = "availability")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @Convert(converter = DayOfWeekAttributeConverter.class)
+    @ElementCollection(targetClass = DayOfWeek.class)
+    @Enumerated(EnumType.STRING)
+    @CollectionTable(
+        name = "employees_availability",
+        joinColumns = @JoinColumn(name = "employee_id")
+    )
+    @Column(name = "weekday")
     private Set<DayOfWeek> daysAvailable;
 
     public long getId() {

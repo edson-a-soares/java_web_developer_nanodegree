@@ -1,7 +1,6 @@
 package com.udacity.critter.infrastructure.persistence;
 
 import java.util.List;
-import java.util.Collection;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
@@ -36,14 +35,14 @@ public class PetRepository implements PetRepositoryInterface {
     }
 
     @Override
-    public Collection<Pet> findById(List<Long> ids) {
-        return manager.createQuery("SELECT p FROM Pet p WHERE p.id IN :ids")
+    public List<Pet> findById(List<Long> ids) {
+        return manager.createQuery("SELECT p FROM Pet p WHERE p.id IN :ids", Pet.class)
             .setParameter("ids", ids)
             .getResultList();
     }
 
     @Override
-    public Collection<Pet> findByOwnerId(long ownerId) {
+    public List<Pet> findByOwnerId(long ownerId) {
         CriteriaBuilder queryBuilder    = manager.getCriteriaBuilder();
         CriteriaQuery<Pet> query 	    = queryBuilder.createQuery(Pet.class);
         Root<Pet> pet			        = query.from(Pet.class);
