@@ -1,49 +1,55 @@
 package com.udacity.critter.controller;
 
-import java.util.Collection;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import javax.persistence.EntityNotFoundException;
+import java.util.List;
 import org.springframework.web.bind.annotation.*;
 import com.udacity.critter.domain.model.user.Customer;
-import com.udacity.critter.domain.model.user.CustomerRepositoryInterface;
-
+import com.udacity.critter.application.service.CustomerService;
+import com.udacity.critter.application.representation.CustomerDTO;
+import com.udacity.critter.domain.model.pet.PetRepositoryInterface;
 
 @RestController
 @RequestMapping("/user")
 public class CustomerController {
 
-    private final CustomerRepositoryInterface customers;
+    private final CustomerService customers;
+    private final PetRepositoryInterface pets;
 
-    public CustomerController(CustomerRepositoryInterface repository) {
-        customers = repository;
+    public CustomerController(CustomerService service, PetRepositoryInterface repository) {
+        pets = repository;
+        customers = service;
     }
 
     @PostMapping("/customer")
-    public ResponseEntity<?> save(@RequestBody Customer customer){
-        try {
-            customer = customers.add(customer);
-            return ResponseEntity.status(HttpStatus.CREATED).body(customer);
+    public CustomerDTO save(@RequestBody CustomerDTO representation){
+        Customer asEntity = new CustomerDTO
+            .EntityBuilder()
+            .with(pets)
+            .from(representation)
+            .build();
 
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        }
+        Customer customer = customers.create(asEntity);
+        return new CustomerDTO
+            .RepresentationBuilder()
+            .from(customer)
+            .build();
     }
 
     @GetMapping("/customer")
-    public Collection<Customer> list(){
-        return customers.list();
+    public List<CustomerDTO> list(){
+        return new CustomerDTO
+            .CollectionBuilder()
+            .from(customers.list())
+            .build();
     }
 
     @GetMapping("/customer/pet/{petId}")
-    public ResponseEntity<?> getOwnerByPet(@PathVariable long petId){
-        try {
-            Customer owner = customers.findByPetId(petId);
-            return ResponseEntity.ok(owner);
+    public CustomerDTO getOwnerByPet(@PathVariable long petId){
+        Customer customer = customers.findByPetId(petId);
 
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+        return new CustomerDTO
+            .RepresentationBuilder()
+            .from(customer)
+            .build();
     }
 
 }

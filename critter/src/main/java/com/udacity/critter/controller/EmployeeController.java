@@ -7,10 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.persistence.EntityNotFoundException;
-import com.udacity.critter.domain.model.user.Customer;
 import com.udacity.critter.domain.model.user.Employee;
-import com.udacity.critter.application.representation.CustomerDTO;
-import com.udacity.critter.application.representation.EmployeeDTO;
 import com.udacity.critter.application.representation.EmployeeRequestDTO;
 import com.udacity.critter.domain.model.user.EmployeesRepositoryInterface;
 
@@ -48,12 +45,14 @@ public class EmployeeController {
 
     @PutMapping("/employee/{employeeId}")
     public void setAvailability(@RequestBody Set<DayOfWeek> daysAvailable, @PathVariable long employeeId) {
-        throw new UnsupportedOperationException();
+        Employee employee = employees.findById(employeeId);
+        employee.setDaysAvailable(daysAvailable);
+        employees.add(employee);
     }
 
     @GetMapping("/employee/availability")
-    public List<EmployeeDTO> findEmployeesForService(@RequestBody EmployeeRequestDTO employeeDTO) {
-        throw new UnsupportedOperationException();
+    public List<Employee> findEmployeesForService(@RequestBody EmployeeRequestDTO representation) {
+        return employees.findByAvailability(representation.getSkills(), representation.getDate());
     }
 
 }

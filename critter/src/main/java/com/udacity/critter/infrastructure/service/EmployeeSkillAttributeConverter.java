@@ -1,4 +1,4 @@
-package com.udacity.critter.infrastructure.persistence;
+package com.udacity.critter.infrastructure.service;
 
 import java.util.Set;
 import java.util.Arrays;
@@ -13,6 +13,9 @@ public class EmployeeSkillAttributeConverter implements AttributeConverter<Set<E
 
     @Override
     public String convertToDatabaseColumn(Set<EmployeeSkill> skills) {
+        if (skills == null || skills.isEmpty())
+            return "";
+
         Set<String> asStrings = skills
             .stream()
             .map(EmployeeSkill::name)
@@ -23,7 +26,7 @@ public class EmployeeSkillAttributeConverter implements AttributeConverter<Set<E
 
     @Override
     public Set<EmployeeSkill> convertToEntityAttribute(String skills) {
-        if (skills == null)
+        if (skills == null || skills.isEmpty())
             return null;
 
         Set<String> asStrings = Arrays.stream(skills.split("\\s*,\\s*")).collect(Collectors.toSet());

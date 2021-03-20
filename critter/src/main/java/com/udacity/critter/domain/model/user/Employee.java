@@ -4,7 +4,8 @@ import java.util.Set;
 import javax.persistence.*;
 import java.time.DayOfWeek;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.udacity.critter.infrastructure.persistence.EmployeeSkillAttributeConverter;
+import com.udacity.critter.infrastructure.service.DayOfWeekAttributeConverter;
+import com.udacity.critter.infrastructure.service.EmployeeSkillAttributeConverter;
 
 @Entity
 @Table(name = "employees")
@@ -22,10 +23,9 @@ public class Employee {
     @Convert(converter = EmployeeSkillAttributeConverter.class)
     private Set<EmployeeSkill> skills;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "availability")
-    @ElementCollection(targetClass = DayOfWeek.class)
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @Convert(converter = DayOfWeekAttributeConverter.class)
     private Set<DayOfWeek> daysAvailable;
 
     public long getId() {

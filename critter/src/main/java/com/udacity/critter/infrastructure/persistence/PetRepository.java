@@ -36,6 +36,13 @@ public class PetRepository implements PetRepositoryInterface {
     }
 
     @Override
+    public Collection<Pet> findById(List<Long> ids) {
+        return manager.createQuery("SELECT p FROM Pet p WHERE p.id IN :ids")
+            .setParameter("ids", ids)
+            .getResultList();
+    }
+
+    @Override
     public Collection<Pet> findByOwnerId(long ownerId) {
         CriteriaBuilder queryBuilder    = manager.getCriteriaBuilder();
         CriteriaQuery<Pet> query 	    = queryBuilder.createQuery(Pet.class);

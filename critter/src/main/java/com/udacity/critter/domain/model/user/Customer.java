@@ -23,7 +23,7 @@ public class Customer {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String notes;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy="owner", cascade = CascadeType.ALL)
     private List<Pet> pets;
 
     @Column(name = "phone_number")
@@ -67,7 +67,7 @@ public class Customer {
         return pets;
     }
 
-    public void setPet(List<Pet> pets) {
+    public void setPets(List<Pet> pets) {
         this.pets = pets;
     }
 
