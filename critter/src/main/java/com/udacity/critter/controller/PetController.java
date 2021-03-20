@@ -1,59 +1,64 @@
 package com.udacity.critter.controller;
 
+import java.util.List;
 import java.util.Collection;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import com.udacity.critter.domain.model.pet.Pet;
 import org.springframework.web.bind.annotation.*;
+import com.udacity.critter.application.service.PetService;
 import com.udacity.critter.application.representation.PetDTO;
-import com.udacity.critter.domain.model.pet.PetRepositoryInterface;
 
 @RestController
 @RequestMapping("/pet")
 public class PetController {
 
-    private final PetRepositoryInterface pets;
+    private final PetService pets;
 
-    public PetController(PetRepositoryInterface repository) {
-        pets = repository;
+    public PetController(PetService service) {
+        pets = service;
     }
 
     @PostMapping
-    public ResponseEntity<?> save(@RequestBody PetDTO representation) {
-        try {
-            Pet pet = representation.asEntity();
-            pets.add(pet);
+    public PetDTO save(@RequestBody PetDTO representation) {
+        Pet entity = new PetDTO
+            .EntityBuilder()
+            .from(representation)
+            .build();
 
-            return ResponseEntity.status(HttpStatus.CREATED).body(representation);
-
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
+        Pet pet = pets.create(entity);
+        return new PetDTO
+            .RepresentationBuilder()
+            .from(pet)
+            .build();
     }
 
     @GetMapping("/{petId}")
-    public ResponseEntity<?> get(@PathVariable long petId) {
-        Pet pet = pets.findById(petId);
-        if (pet == null)
-            return ResponseEntity.notFound().build();
+    public PetDTO get(@PathVariable long petId) {
+        Pet pet = pets.findByPetId(petId);
 
-        return ResponseEntity.ok(new PetDTO(pet));
+        return new PetDTO
+            .RepresentationBuilder()
+            .from(pet)
+            .build();
     }
 
     @GetMapping
-    public Collection<PetDTO> list(){
-        PetDTO representation = new PetDTO(pets.list());
-        return representation.asCollection();
+    public List<PetDTO> list(){
+        return new PetDTO
+            .CollectionBuilder()
+            .from(pets.list())
+            .build();
     }
 
     @GetMapping("/owner/{ownerId}")
-    public ResponseEntity<?> getPetsByOwner(@PathVariable long ownerId) {
+    public List<PetDTO> getPetsByOwner(@PathVariable long ownerId) {
         Collection<Pet> animals = pets.findByOwnerId(ownerId);
         if (animals.isEmpty())
-            return ResponseEntity.notFound().build();
+            return null;
 
-        PetDTO representation = new PetDTO(animals);
-        return ResponseEntity.ok(representation.asCollection());
+        return new PetDTO
+            .CollectionBuilder()
+            .from(animals)
+            .build();
 
     }
 

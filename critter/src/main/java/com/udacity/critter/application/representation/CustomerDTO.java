@@ -67,7 +67,7 @@ public class CustomerDTO {
     }
 
     /**
-     * It builds an entity out ot its DTO representation.
+     * It builds an entity out of its DTO representation.
      */
     public static class EntityBuilder {
 
@@ -99,7 +99,7 @@ public class CustomerDTO {
     }
 
     /**
-     * It builds a representation collections out ot its Entity collection.
+     * It builds a representation collections out of its Entity collection.
      */
     public static class CollectionBuilder {
 
@@ -121,7 +121,7 @@ public class CustomerDTO {
     }
 
     /**
-     * It builds a single representation out ot its Entity.
+     * It builds a single representation out of its Entity.
      */
     public static class RepresentationBuilder {
 
