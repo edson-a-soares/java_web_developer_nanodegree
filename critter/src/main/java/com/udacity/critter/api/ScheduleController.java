@@ -1,4 +1,4 @@
-package com.udacity.critter.controller;
+package com.udacity.critter.api;
 
 import java.util.List;
 import java.util.Collection;

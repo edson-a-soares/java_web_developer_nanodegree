@@ -1,12 +1,9 @@
-package com.udacity.critter.controller;
+package com.udacity.critter.api;
 
 import java.util.Set;
 import java.util.List;
 import java.time.DayOfWeek;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import javax.persistence.EntityNotFoundException;
 import com.udacity.critter.domain.model.user.Employee;
 import com.udacity.critter.application.representation.EmployeeRequestDTO;
 import com.udacity.critter.domain.model.user.EmployeesRepositoryInterface;
@@ -22,25 +19,13 @@ public class EmployeeController {
     }
 
     @PostMapping("/employee")
-    public ResponseEntity<?> save(@RequestBody Employee data) {
-        try {
-            Employee employee = employees.add(data);
-            return ResponseEntity.status(HttpStatus.CREATED).body(employee);
-
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        }
+    public Employee save(@RequestBody Employee data) {
+        return employees.add(data);
     }
 
     @PostMapping("/employee/{employeeId}")
-    public ResponseEntity<?> get(@PathVariable long employeeId) {
-        try {
-            Employee employee = employees.findById(employeeId);
-            return ResponseEntity.ok(employee);
-
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+    public Employee get(@PathVariable long employeeId) {
+        return employees.findById(employeeId);
     }
 
     @PutMapping("/employee/{employeeId}")
