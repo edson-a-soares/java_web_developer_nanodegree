@@ -1,14 +1,19 @@
 package com.udacity.critter.domain.model.user;
 
+import lombok.Getter;
+import lombok.Setter;
 import java.util.List;
 import javax.persistence.*;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 import com.udacity.critter.domain.model.pet.Pet;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "customers")
-@JsonIgnoreProperties(value = { "pets" })
 public class Customer {
 
     @Id
@@ -20,7 +25,6 @@ public class Customer {
     private String name;
 
     @Column(name = "notes")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String notes;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy="owner", cascade = CascadeType.ALL)
@@ -28,47 +32,5 @@ public class Customer {
 
     @Column(name = "phone_number")
     private String phoneNumber;
-
-    public Customer() {}
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String number) {
-        this.phoneNumber = number;
-    }
-
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
-
-    public List<Pet> getPets() {
-        return pets;
-    }
-
-    public void setPets(List<Pet> pets) {
-        this.pets = pets;
-    }
 
 }

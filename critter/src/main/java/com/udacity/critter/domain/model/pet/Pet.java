@@ -1,10 +1,18 @@
 package com.udacity.critter.domain.model.pet;
 
+import lombok.Getter;
+import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDate;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 import com.udacity.critter.domain.model.user.Customer;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "pets")
 public class Pet {
 
@@ -26,55 +34,7 @@ public class Pet {
     @Column(name = "notes")
     private String notes;
 
-    @Column(columnDefinition = "DATE")
+    @Column(name = "birth_date")
     private LocalDate birthDate;
-
-    public PetType getType() {
-        return type;
-    }
-
-    public void setType(PetType type) {
-        this.type = type;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Customer getOwner() {
-        return owner;
-    }
-
-    public void setOwner(Customer customer) {
-        owner = customer;
-    }
-
-    public LocalDate getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
-    }
-
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
 }

@@ -1,5 +1,8 @@
 package com.udacity.critter.domain.model.pet;
 
+import lombok.Getter;
+
+@Getter
 public enum PetType {
 
     CAT ("CAT"),
@@ -14,10 +17,6 @@ public enum PetType {
 
     private PetType(String code) {
         this.code = code;
-    }
-
-    public String getCode() {
-        return code;
     }
 
 }

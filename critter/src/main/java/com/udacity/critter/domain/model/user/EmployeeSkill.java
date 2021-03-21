@@ -1,5 +1,8 @@
 package com.udacity.critter.domain.model.user;
 
+import lombok.Getter;
+
+@Getter
 public enum EmployeeSkill {
 
     PETTING ("PETTING"),
@@ -12,15 +15,6 @@ public enum EmployeeSkill {
 
     EmployeeSkill(String code) {
         this.code = code;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    @Override
-    public String toString() {
-        return code;
     }
 
 }
