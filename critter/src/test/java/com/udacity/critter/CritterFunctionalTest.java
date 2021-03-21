@@ -143,47 +143,50 @@ public class CritterFunctionalTest {
 
     @Test
     public void testFindEmployeesByServiceAndTime() {
-        EmployeeDTO emp1 = createEmployeeDTO();
-        EmployeeDTO emp2 = createEmployeeDTO();
-        EmployeeDTO emp3 = createEmployeeDTO();
+        EmployeeDTO firstEmployee   = createEmployeeDTO();
+        EmployeeDTO secondEmployee  = createEmployeeDTO();
+        EmployeeDTO thirdEmployee   = createEmployeeDTO();
 
-        emp1.setDaysAvailable(Sets.newHashSet(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY));
-        emp2.setDaysAvailable(Sets.newHashSet(DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY, DayOfWeek.FRIDAY));
-        emp3.setDaysAvailable(Sets.newHashSet(DayOfWeek.FRIDAY, DayOfWeek.SATURDAY, DayOfWeek.SUNDAY));
+        firstEmployee.setDaysAvailable(Sets.newHashSet(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY));
+        secondEmployee.setDaysAvailable(Sets.newHashSet(DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY, DayOfWeek.FRIDAY));
+        thirdEmployee.setDaysAvailable(Sets.newHashSet(DayOfWeek.FRIDAY, DayOfWeek.SATURDAY, DayOfWeek.SUNDAY));
 
-        emp1.setSkills(Sets.newHashSet(EmployeeSkill.FEEDING, EmployeeSkill.PETTING));
-        emp2.setSkills(Sets.newHashSet(EmployeeSkill.PETTING, EmployeeSkill.WALKING));
-        emp3.setSkills(Sets.newHashSet(EmployeeSkill.WALKING, EmployeeSkill.SHAVING));
+        firstEmployee.setSkills(Sets.newHashSet(EmployeeSkill.FEEDING, EmployeeSkill.PETTING));
+        secondEmployee.setSkills(Sets.newHashSet(EmployeeSkill.PETTING, EmployeeSkill.MEDICATING));
+        thirdEmployee.setSkills(Sets.newHashSet(EmployeeSkill.WALKING, EmployeeSkill.SHAVING));
 
-        EmployeeDTO emp1n = employeeController.save(emp1);
-        EmployeeDTO emp2n = employeeController.save(emp2);
-        EmployeeDTO emp3n = employeeController.save(emp3);
+        EmployeeDTO savedEmployeeOne    = employeeController.save(firstEmployee);
+        EmployeeDTO savedEmployeeTwo    = employeeController.save(secondEmployee);
+        EmployeeDTO savedEmployeeThree  = employeeController.save(thirdEmployee);
 
-        //make a request that matches employee 1 or 2
-        EmployeeRequestDTO er1 = new EmployeeRequestDTO();
-        er1.setDate(LocalDate.of(2019, 12, 25)); // wednesday
-        er1.setSkills(Sets.newHashSet(EmployeeSkill.PETTING));
+        // make a request that matches employee 1 or 2
+        EmployeeRequestDTO firstEmployeeRequest = new EmployeeRequestDTO();
+        firstEmployeeRequest.setDate(LocalDate.of(2019, 12, 25)); // wednesday
+        firstEmployeeRequest.setSkills(Sets.newHashSet(EmployeeSkill.PETTING));
 
-        Set<Long> eIds1 = employeeController.findEmployeesForService(er1)
+        Set<Long> firstEmployeesIdList = employeeController.findEmployeesForService(firstEmployeeRequest)
             .stream()
             .map(EmployeeDTO::getId)
             .collect(Collectors.toSet());
 
-        Set<Long> eIds1expected = Sets.newHashSet(emp1n.getId(), emp2n.getId());
-        Assertions.assertEquals(eIds1, eIds1expected);
+        Set<Long> firstEmployeeRequestExpectedIdList = Sets.newHashSet(
+            savedEmployeeOne.getId(),
+            savedEmployeeTwo.getId()
+        );
+        Assertions.assertEquals(firstEmployeesIdList, firstEmployeeRequestExpectedIdList);
 
-        //make a request that matches only employee 3
-        EmployeeRequestDTO er2 = new EmployeeRequestDTO();
-        er2.setDate(LocalDate.of(2019, 12, 27)); //friday
-        er2.setSkills(Sets.newHashSet(EmployeeSkill.WALKING, EmployeeSkill.SHAVING));
+        // make a request that matches only employee 3
+        EmployeeRequestDTO secondEmployeeRequest = new EmployeeRequestDTO();
+        secondEmployeeRequest.setDate(LocalDate.of(2019, 12, 27)); // friday
+        secondEmployeeRequest.setSkills(Sets.newHashSet(EmployeeSkill.WALKING, EmployeeSkill.SHAVING));
 
-        Set<Long> eIds2 = employeeController.findEmployeesForService(er2)
+        Set<Long> secondEmployeesIdList = employeeController.findEmployeesForService(secondEmployeeRequest)
             .stream()
             .map(EmployeeDTO::getId)
             .collect(Collectors.toSet());
 
-        Set<Long> eIds2expected = Sets.newHashSet(emp3n.getId());
-        Assertions.assertEquals(eIds2, eIds2expected);
+        Set<Long> secondEmployeeRequestExpectedIdList = Sets.newHashSet(savedEmployeeThree.getId());
+        Assertions.assertEquals(secondEmployeesIdList, secondEmployeeRequestExpectedIdList);
     }
 
     @Test
