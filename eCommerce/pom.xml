@@ -12,12 +12,12 @@
 	<artifactId>ecommerce</artifactId>
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>eCommerce</name>
+	<name>ecommerce</name>
 	<description>Starter code for eCommerce project with Spring Boot</description>
 
 	<properties>
 		<java.version>1.8</java.version>
-    	<maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
+    	<maven-jar-plugin.version>3.6.3</maven-jar-plugin.version>
 	</properties>
 
 	<dependencies>

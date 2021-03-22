@@ -1,0 +1,35 @@
+pipeline {
+
+    agent any
+
+    environment {
+        APPLICATION_DIRECTORY         = 'eCommerce'
+        WORKSPACE                     = pwd()
+    }
+
+    options {
+        skipDefaultCheckout()
+        skipStagesAfterUnstable()
+    }
+
+    stages {
+
+        stage ('First') {
+
+            when {
+                anyOf {
+                    changeset "${APPLICATION_DIRECTORY}/**/*"
+                }
+            }
+
+            steps {
+                script {
+                    sh 'echo $HOME'
+                }
+            }
+
+        }
+
+    }   // Stages
+
+}       // Pipeline

@@ -1,0 +1,17 @@
+version: '3.3'
+
+services:
+  jenkins:
+    build:
+      context: .
+      dockerfile: Jenkins.Dockerfile
+    image: jenkins
+    container_name: jenkins
+    restart: on-failure
+    environment:
+      JENKINS_USER: udacity
+      JENKINS_PASSWORD: ecommerce
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 8080:8080

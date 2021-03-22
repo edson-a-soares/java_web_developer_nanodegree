@@ -1,0 +1,47 @@
+jenkins:
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+        - id: ${JENKINS_USER}
+          password: ${JENKINS_PASSWORD}
+  authorizationStrategy:
+    globalMatrix:
+      permissions:
+        - "Overall/Administer:ecommerce"
+        - "Overall/Read:anonymous"
+#      remotingSecurity:
+#        enabled: true
+#    security:
+#      queueItemAuthenticator:
+#        authenticators:
+#          - global:
+#              strategy: triggeringUsersAuthorizationStrategy
+unclassified:
+  location:
+    url: http://127.0.0.1:8080
+
+jobs:
+  - script: >
+      pipelineJob('e-Commerce') {
+          description("Udacity Nanodegree e-Commerce Application")
+          properties{
+              githubProjectUrl ('https://github.com/edson-a-soares/java_developer_nanodegree/eCommerce')
+          }
+          triggers {
+              githubPush()
+          }
+          definition {
+              cpsScm {
+                  scm {
+                      git {
+                          remote {
+                              url('https://github.com/edson-a-soares/java_developer_nanodegree')
+                          }
+                          branch('master')
+                      }
+                  }
+                  scriptPath('eCommerce/Jenkinsfile')
+              }
+          }
+      }
