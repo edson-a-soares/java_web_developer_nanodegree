@@ -1,6 +1,15 @@
 version: '3.3'
 
 services:
+  tomcat:
+    build:
+      context: .
+      dockerfile: Application.Dockerfile
+    image: e-commerce
+    container_name: e-commerce
+    ports:
+      - 8085:8080
+
   jenkins:
     build:
       context: .
