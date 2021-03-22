@@ -9,8 +9,8 @@ services:
     container_name: jenkins
     restart: on-failure
     environment:
-      JENKINS_USER: udacity
-      JENKINS_PASSWORD: ecommerce
+      JENKINS_USER: ecommerce
+      JENKINS_PASSWORD: udacity
     volumes:
     - /var/run/docker.sock:/var/run/docker.sock
     ports:

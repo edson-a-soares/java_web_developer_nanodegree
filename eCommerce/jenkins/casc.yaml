@@ -38,7 +38,7 @@ jobs:
                           remote {
                               url('https://github.com/edson-a-soares/java_developer_nanodegree')
                           }
-                          branch('master')
+                          branch('main')
                       }
                   }
                   scriptPath('eCommerce/Jenkinsfile')
