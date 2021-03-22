@@ -14,7 +14,31 @@ pipeline {
 
     stages {
 
-        stage ('First') {
+        stage ('SCM Checkout') {
+
+            steps {
+                checkout scm
+            }
+
+        }
+
+        stage ('Tests') {
+
+            when {
+                anyOf {
+                    changeset "${APPLICATION_DIRECTORY}/**/*"
+                }
+            }
+
+            steps {
+                script {
+                    sh 'echo $HOME'
+                }
+            }
+
+        }
+
+        stage ('Deploy') {
 
             when {
                 anyOf {
