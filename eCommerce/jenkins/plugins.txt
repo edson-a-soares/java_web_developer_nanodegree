@@ -1,3 +1,5 @@
+docker-workflow:latest
+docker-plugin:latest
 blueocean:latest
 job-dsl:latest
 build-timeout:latest

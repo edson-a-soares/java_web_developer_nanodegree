@@ -14,6 +14,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
@@ -33,6 +34,7 @@ public class User {
 	@JsonProperty
 	private String username;
 
+	@JsonInclude(JsonInclude.Include.NON_NULL)
 	@Column(nullable = false, unique = true)
 	@JsonProperty
 	private String password;
