@@ -1,42 +1,24 @@
 package com.udacity.ecommerce.model.requests;
 
+import lombok.Setter;
+import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ModifyCartRequest {
-	
-	@JsonProperty
-	private String username;
-	
+
 	@JsonProperty
 	private long itemId;
-	
+
+	@JsonProperty
+	private String username;
+
 	@JsonProperty
 	private int quantity;
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public long getItemId() {
-		return itemId;
-	}
-
-	public void setItemId(long itemId) {
-		this.itemId = itemId;
-	}
-
-	public int getQuantity() {
-		return quantity;
-	}
-
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
-	
-	
 
 }

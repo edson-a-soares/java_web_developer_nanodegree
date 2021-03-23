@@ -1,23 +1,27 @@
 package com.udacity.ecommerce.model.persistence;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashSet;
+import lombok.Getter;
+import lombok.Setter;
 import java.util.List;
-import java.util.Set;
-
+import java.util.ArrayList;
+import java.math.BigDecimal;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import javax.persistence.OneToOne;
+import javax.persistence.ManyToMany;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "cart")
 public class Cart {
 	
@@ -39,58 +43,26 @@ public class Cart {
 	@Column
 	@JsonProperty
 	private BigDecimal total;
-	
-	public BigDecimal getTotal() {
-		return total;
-	}
 
-	public void setTotal(BigDecimal total) {
-		this.total = total;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public List<Item> getItems() {
-		return items;
-	}
-
-	public void setItems(List<Item> items) {
-		this.items = items;
-	}
-	
 	public void addItem(Item item) {
-		if(items == null) {
+		if(items == null)
 			items = new ArrayList<>();
-		}
+
 		items.add(item);
-		if(total == null) {
+		if(total == null)
 			total = new BigDecimal(0);
-		}
+
 		total = total.add(item.getPrice());
 	}
 	
 	public void removeItem(Item item) {
-		if(items == null) {
+		if(items == null)
 			items = new ArrayList<>();
-		}
+
 		items.remove(item);
-		if(total == null) {
+		if(total == null)
 			total = new BigDecimal(0);
-		}
+
 		total = total.subtract(item.getPrice());
 	}
 }

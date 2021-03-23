@@ -17,10 +17,10 @@ import com.udacity.ecommerce.model.persistence.repositories.CartRepository;
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
-	
+
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@Autowired
 	private CartRepository cartRepository;
 
