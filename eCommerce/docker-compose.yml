@@ -9,6 +9,12 @@ services:
     container_name: e-commerce
     ports:
       - 8085:8080
+    logging:
+      driver: splunk
+      options:
+        splunk-url: https://172.17.0.2:8088
+        splunk-token: "9b80162d-02ba-445c-aabc-95e29308c818"
+        splunk-insecureskipverify: 'true'
 
   jenkins:
     build:

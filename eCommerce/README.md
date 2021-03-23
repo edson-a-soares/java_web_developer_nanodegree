@@ -19,3 +19,4 @@ Available addresses.
 * [eCommerce Udacity's skeleton repository.](https://github.com/udacity/nd035-c4-Security-and-DevOps)
 * [Jenkins Configuration as Code with Docker.](https://www.digitalocean.com/community/tutorials/how-to-automate-jenkins-setup-with-docker-and-jenkins-configuration-as-code)
 * [Jenkins Job Configuration automation.](https://www.digitalocean.com/community/tutorials/how-to-automate-jenkins-job-configuration-using-job-dsl)
+* [Docker Splunk logging driver.](https://medium.com/@caysever/docker-splunk-logging-driver-c70dd78ad56a)
