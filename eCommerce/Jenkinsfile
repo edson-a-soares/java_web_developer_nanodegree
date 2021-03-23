@@ -3,8 +3,7 @@ pipeline {
     agent any
 
     environment {
-        APPLICATION_DIRECTORY         = 'eCommerce'
-        WORKSPACE                     = pwd()
+        APPLICATION_DIRECTORY = 'eCommerce'
     }
 
     options {
@@ -22,7 +21,7 @@ pipeline {
 
         }
 
-        stage ('Tests') {
+        stage ('Build') {
 
             when {
                 anyOf {
@@ -32,8 +31,32 @@ pipeline {
 
             steps {
                 script {
-                    sh 'echo $HOME'
+                    sh 'mvn -B -DskipTests clean package'
                 }
+            }
+
+        }
+
+        stage ('Test') {
+
+            when {
+                anyOf {
+                    changeset "${APPLICATION_DIRECTORY}/**/*"
+                }
+            }
+
+            steps {
+
+                script {
+                    sh 'mvn test'
+                }
+
+                post {
+                    always {
+                        junit 'target/surefire-reports/*.xml'
+                    }
+                }
+
             }
 
         }

@@ -14,6 +14,8 @@ To go straight to the **application**, use Docker.
 Available addresses.
 - [e-Commerce API](http://localhost:8000/api/item)
 - [Jenkins](http://localhost:8080/blue)
+    - **Username**: ecommerce
+    - **Password**: udacity
 
 #### Useful links ###
 * [eCommerce Udacity's skeleton repository.](https://github.com/udacity/nd035-c4-Security-and-DevOps)
