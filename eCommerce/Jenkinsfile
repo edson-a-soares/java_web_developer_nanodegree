@@ -1,16 +1,9 @@
 pipeline {
 
-    agent {
-
-        docker {
-            image 'maven:3-alpine'
-            args '-v /root/.m2:/root/.m2'
-        }
-
-    }
+    agent any
 
     environment {
-        APPLICATION_DIRECTORY = 'eCommerce'
+        APPLICATION_DIRECTORY = "$WORKSPACE/eCommerce"
     }
 
     options {
@@ -32,7 +25,9 @@ pipeline {
 
             steps {
                 script {
-                    sh 'mvn -B -DskipTests clean package'
+                    docker.image("maven:3.6.3-openjdk-8-slim").inside() {
+                        sh 'mvn -B -DskipTests clean package'
+                    }
                 }
             }
 
@@ -72,7 +67,7 @@ pipeline {
 
             steps {
                 script {
-                    sh 'echo $HOME'
+                    sh 'echo $APPLICATION_DIRECTORY'
                 }
             }
 
