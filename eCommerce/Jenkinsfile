@@ -23,12 +23,6 @@ pipeline {
 
         stage ('Build') {
 
-            when {
-                anyOf {
-                    changeset "${APPLICATION_DIRECTORY}/**/*"
-                }
-            }
-
             steps {
                 script {
                     sh 'mvn -B -DskipTests clean package'
