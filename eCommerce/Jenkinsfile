@@ -107,7 +107,9 @@ pipeline {
                                 cd $APPLICATION_CONTEXT
                                 mvn -DskipTests clean package
 
-                                curl --verbose --upload-file $APPLICATION_WAR_FILE "http://${TOMCAT_USER}:${TOMCAT_PASSWORD}@${TOMCAT_ADDRESS}:${TOMCAT_PORT}/manager/text/deploy?path=/&update=true"
+                                TOMCAT_IP=$(docker inspect --format '{{ .NetworkSettings.Networks.ecommerce_default.IPAddress }}' $TOMCAT_ADDRESS)
+                                echo "$TOMCAT_FULL"
+                                # curl --verbose --upload-file $APPLICATION_WAR_FILE "http://${TOMCAT_USER}:${TOMCAT_PASSWORD}@${TOMCAT_IP}:${TOMCAT_PORT}/manager/text/deploy?path=/&update=true"
                             """
                         }
                     }
