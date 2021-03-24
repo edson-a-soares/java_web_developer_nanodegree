@@ -105,9 +105,9 @@ pipeline {
                             sh """
                                 #!/bin/bash
                                 cd $APPLICATION_CONTEXT
-                                mvn package
+                                mvn  -DskipTests clean package
 
-                                curl --upload-file $APPLICATION_WAR_FILE "http://${TOMCAT_USER}:${TOMCAT_PASSWORD}@{TOMCAT_ADDRESS}:${TOMCAT_PORT}/manager/text/deploy?path=/&update=true"
+                                curl --upload-file $APPLICATION_WAR_FILE "http://${TOMCAT_USER}:${TOMCAT_PASSWORD}@${TOMCAT_ADDRESS}:${TOMCAT_PORT}/manager/text/deploy?path=/&update=true"
 
                             """
                         }
