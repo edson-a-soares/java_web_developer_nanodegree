@@ -28,13 +28,9 @@ pipeline {
 
                 script {
                     docker.image("maven:3.6.3-openjdk-8-slim").inside() {
-
-                        dir("$APPLICATION_CONTEXT") {
-                            sh 'mvn -B -DskipTests clean package'
-                        }
-
+                        sh 'cd $APPLICATION_CONTEXT'
+                        sh 'mvn -B -DskipTests clean package'
                     }
-
                 }
 
             }
@@ -45,7 +41,7 @@ pipeline {
 
             when {
                 anyOf {
-                    changeset "${APPLICATION_DIRECTORY}/**/*"
+                    changeset "$APPLICATION_CONTEXT/**/*"
                 }
             }
 
@@ -53,7 +49,9 @@ pipeline {
 
                 script {
                     docker.image("maven:3.6.3-openjdk-8-slim").inside() {
-                        sh 'mvn test'
+                        dir("$APPLICATION_CONTEXT") {
+                            sh 'mvn test'
+                        }
                     }
                 }
 
