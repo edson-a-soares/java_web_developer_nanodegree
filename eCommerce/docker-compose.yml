@@ -4,29 +4,42 @@ services:
   tomcat:
     build:
       context: .
-      dockerfile: Application.Dockerfile
-    image: e-commerce
-    container_name: e-commerce
+      dockerfile: Tomcat.Dockerfile
+    image: udacity-tomcat
+    container_name: udacity-tomcat
     ports:
-      - 8085:8080
-    logging:
-      driver: splunk
-      options:
-        splunk-url: https://172.17.0.2:8088
-        splunk-token: "9b80162d-02ba-445c-aabc-95e29308c818"
-        splunk-insecureskipverify: 'true'
+      - 8080:8080
+    networks:
+      - cluster_network
+
+    # logging:
+    #  driver: splunk
+    #  options:
+    #    splunk-url: https://172.17.0.2:8088
+    #    splunk-token: ""
+    #    splunk-insecureskipverify: 'true'
 
   jenkins:
     build:
       context: .
       dockerfile: Jenkins.Dockerfile
-    image: jenkins
-    container_name: jenkins
+    image: udacity-jenkins
+    container_name: udacity-jenkins
     restart: on-failure
     environment:
       JENKINS_USER: ecommerce
       JENKINS_PASSWORD: udacity
+      TOMCAT_USER: udacity
+      TOMCAT_PASSWORD: ecommerce
+      TOMCAT_ADDRESS: udacity-tomcat
+      TOMCAT_PORT: 8080
     volumes:
-    - /var/run/docker.sock:/var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock
     ports:
-      - 8080:8080
+      - 9000:8080
+    networks:
+      - cluster_network
+
+networks:
+  cluster_network:
+      driver: bridge

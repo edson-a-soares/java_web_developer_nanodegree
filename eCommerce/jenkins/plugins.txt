@@ -1,3 +1,5 @@
+code-coverage-api:latest
+cobertura:latest
 docker-workflow:latest
 docker-plugin:latest
 blueocean:latest
