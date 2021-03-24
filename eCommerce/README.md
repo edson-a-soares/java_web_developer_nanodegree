@@ -12,8 +12,10 @@ To go straight to the **application**, use Docker.
 - ```docker-compose up -d```
 
 Available addresses.
-- [e-Commerce API](http://localhost:8000/api/item)
-- [Jenkins](http://localhost:8080/blue)
+- [e-Commerce API](http://localhost:8080)
+- [Jenkins](http://localhost:9000/blue)   
+  **Disclaimer**: You should trigger one build in order to deploy the application at least once before trying to access it.
+  It's all set on Jenkins. Just trigger the build and **approve** the deployment.
     - **Username**: ecommerce
     - **Password**: udacity
 
