@@ -42,10 +42,27 @@ pipeline {
 
                 script {
                     docker.image("maven:3.6.3-openjdk-8-slim").inside() {
-                        sh 'cd $APPLICATION_CONTEXT && mvn test'
+                        sh 'cd $APPLICATION_CONTEXT && mvn clean test'
                     }
                 }
 
+            }
+
+            post {
+                always {
+                    step([
+                        $class: 'CoberturaPublisher',
+                        autoUpdateHealth: false,
+                        autoUpdateStability: false,
+                        coberturaReportFile: '**/coverage.xml',
+                        failUnhealthy: false,
+                        failUnstable: false,
+                        maxNumberOfBuilds: 0,
+                        onlyStable: false,
+                        sourceEncoding: 'ASCII',
+                        zoomCoverageChart: false
+                    ])
+                }
             }
 
         }
