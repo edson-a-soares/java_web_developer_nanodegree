@@ -23,42 +23,11 @@ pipeline {
 
         }
 
-        stage ('Build') {
-
-            steps {
-
-                script {
-                    docker.image("maven:3.6.3-openjdk-8-slim").inside() {
-                        sh 'cd $APPLICATION_CONTEXT && mvn -B -DskipTests clean package'
-                    }
-                }
-
-            }
-
-        }
-
-        stage ('Test') {
-
-            steps {
-
-                script {
-                    docker.image("maven:3.6.3-openjdk-8-slim").inside() {
-                        sh 'cd $APPLICATION_CONTEXT && mvn clean test cobertura:cobertura -Dcobertura.report.format=xml'
-                    }
-                }
-
-            }
-
-            post {
-                always {
-                    junit '**/target/*-reports/TEST-*.xml'
-                    step([$class: 'CoberturaPublisher', coberturaReportFile: 'eCommerce/target/site/cobertura/coverage.xml'])
-                }
-            }
-
-        }
-
         stage ('Deploy') {
+
+            environment {
+              TOMCAT_IP = sh(script: "docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $TOMCAT_ADDRESS", returnStdout: true)
+            }
 
             steps {
 
@@ -107,7 +76,6 @@ pipeline {
                                 cd $APPLICATION_CONTEXT
                                 mvn -DskipTests clean package
 
-                                TOMCAT_IP = `docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $TOMCAT_ADDRESS"`
                                 echo "$TOMCAT_IP"
                                 # curl --verbose --upload-file $APPLICATION_WAR_FILE "http://${TOMCAT_USER}:${TOMCAT_PASSWORD}@${TOMCAT_IP}:${TOMCAT_PORT}/manager/text/deploy?path=/&update=true"
                             """
