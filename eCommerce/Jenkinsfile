@@ -99,13 +99,7 @@ pipeline {
 
             }       // Steps
 
-            post {
-                failure {
-                    // In case of failure
-                }
-            }
-
-        }
+        } // Stage
 
     }   // Stages
 
