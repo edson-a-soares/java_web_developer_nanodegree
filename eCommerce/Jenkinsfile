@@ -42,7 +42,7 @@ pipeline {
 
                 script {
                     docker.image("maven:3.6.3-openjdk-8-slim").inside() {
-                        sh 'cd $APPLICATION_CONTEXT && mvn clean test'
+                        sh 'cd $APPLICATION_CONTEXT && mvn clean test cobertura:cobertura -Dcobertura.report.format=xml'
                     }
                 }
 
