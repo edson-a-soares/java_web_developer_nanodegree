@@ -24,12 +24,6 @@ pipeline {
 
         stage ('Build') {
 
-            when {
-                allOf {
-                    changeset "$APPLICATION_CONTEXT/**"
-                }
-            }
-
             steps {
 
                 script {
@@ -43,12 +37,6 @@ pipeline {
         }
 
         stage ('Test') {
-
-            when {
-                anyOf {
-                    changeset "$APPLICATION_CONTEXT/**/*.java"
-                }
-            }
 
             steps {
 
