@@ -76,8 +76,8 @@ pipeline {
                                 cd $APPLICATION_CONTEXT
                                 mvn -DskipTests clean package
 
-                                echo "$TOMCAT_IP"
-                                # curl --verbose --upload-file $APPLICATION_WAR_FILE "http://${TOMCAT_USER}:${TOMCAT_PASSWORD}@${TOMCAT_IP}:${TOMCAT_PORT}/manager/text/deploy?path=/&update=true"
+                                echo "Tomcat Container IP.: $TOMCAT_IP"
+                                curl --verbose --upload-file $APPLICATION_WAR_FILE "http://${TOMCAT_USER}:${TOMCAT_PASSWORD}@${TOMCAT_IP}:${TOMCAT_PORT}/manager/text/deploy?path=/&update=true"
                             """
                         }
                     }
