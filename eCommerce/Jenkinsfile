@@ -3,9 +3,8 @@ pipeline {
     agent any
 
     environment {
-        JENKINS_JOB = "e-Commerce"
         PROJECT_REPOSITORY_DIRECTORY = "eCommerce"
-        APPLICATION_ROOT_DIRECTORY = "$WORKSPACE/$PROJECT_REPOSITORY_DIRECTORY"
+        APPLICATION_CONTEXT = "$WORKSPACE/$PROJECT_REPOSITORY_DIRECTORY"
     }
 
     options {
@@ -29,7 +28,11 @@ pipeline {
 
                 script {
                     docker.image("maven:3.6.3-openjdk-8-slim").inside() {
-                            sh '$APPLICATION_ROOT_DIRECTORY'
+
+                        dir("$APPLICATION_CONTEXT") {
+                            sh 'mvn -B -DskipTests clean package'
+                        }
+
                     }
 
                 }
