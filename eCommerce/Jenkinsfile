@@ -3,7 +3,9 @@ pipeline {
     agent any
 
     environment {
-        APPLICATION_DIRECTORY = "$WORKSPACE/eCommerce"
+        JENKINS_JOB = "e-Commerce"
+        PROJECT_REPOSITORY_DIRECTORY = "eCommerce"
+        APPLICATION_DIRECTORY = "$WORKSPACE/$JENKINS_JOB/$PROJECT_REPOSITORY_DIRECTORY"
     }
 
     options {
@@ -24,9 +26,11 @@ pipeline {
         stage ('Build') {
 
             steps {
-                script {
-                    docker.image("maven:3.6.3-openjdk-8-slim").inside() {
-                        sh 'mvn -B -DskipTests clean package'
+                dir($APPLICATION_DIRECTORY) {
+                    script {
+                        docker.image("maven:3.6.3-openjdk-8-slim").inside() {
+                            sh 'mvn -B -DskipTests clean package'
+                        }
                     }
                 }
             }
@@ -44,7 +48,9 @@ pipeline {
             steps {
 
                 script {
-                    sh 'mvn test'
+                    docker.image("maven:3.6.3-openjdk-8-slim").inside() {
+                        sh 'mvn test'
+                    }
                 }
 
                 post {
