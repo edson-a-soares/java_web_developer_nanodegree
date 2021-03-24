@@ -25,8 +25,9 @@ pipeline {
 
             steps {
                 script {
-                    sh 'mvn --version'
-                    sh 'mvn -B -DskipTests clean package'
+                    docker.image("maven:3.6.3-openjdk-8-slim").inside() {
+                        sh 'mvn -B -DskipTests clean package'
+                    }
                 }
             }
 
