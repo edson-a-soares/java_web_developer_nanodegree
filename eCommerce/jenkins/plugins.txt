@@ -1,3 +1,5 @@
+deploy:latest
+publish-over-ssh:latest
 code-coverage-api:latest
 cobertura:latest
 docker-workflow:latest
