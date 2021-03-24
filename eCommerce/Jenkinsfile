@@ -24,6 +24,12 @@ pipeline {
 
         stage ('Build') {
 
+            when {
+                allOf {
+                    changeset "$APPLICATION_CONTEXT/**"
+                }
+            }
+
             steps {
 
                 script {
@@ -40,7 +46,7 @@ pipeline {
 
             when {
                 anyOf {
-                    changeset "$APPLICATION_CONTEXT/**/*"
+                    changeset "$APPLICATION_CONTEXT/**/*.java"
                 }
             }
 
@@ -48,15 +54,7 @@ pipeline {
 
                 script {
                     docker.image("maven:3.6.3-openjdk-8-slim").inside() {
-                        dir("$APPLICATION_CONTEXT") {
-                            sh 'mvn test'
-                        }
-                    }
-                }
-
-                post {
-                    always {
-                        junit 'target/surefire-reports/*.xml'
+                        sh 'cd $APPLICATION_CONTEXT && mvn test'
                     }
                 }
 
@@ -66,15 +64,9 @@ pipeline {
 
         stage ('Deploy') {
 
-            when {
-                anyOf {
-                    changeset "${APPLICATION_DIRECTORY}/**/*"
-                }
-            }
-
             steps {
                 script {
-                    sh 'echo $APPLICATION_DIRECTORY'
+                    sh 'echo $APPLICATION_CONTEXT'
                 }
             }
 
