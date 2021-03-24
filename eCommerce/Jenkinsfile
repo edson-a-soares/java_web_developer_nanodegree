@@ -104,9 +104,9 @@ pipeline {
                         docker.image("maven:3.6.3-openjdk-8-slim").inside() {
                             sh """
                                 #!/bin/bash
+                                cd $APPLICATION_CONTEXT
                                 mvn package
 
-                                cd $APPLICATION_CONTEXT
                                 curl --upload-file $APPLICATION_WAR_FILE "http://${TOMCAT_USER}:${TOMCAT_PASSWORD}@{TOMCAT_ADDRESS}:${TOMCAT_PORT}/manager/text/deploy?path=/&update=true"
 
                             """
