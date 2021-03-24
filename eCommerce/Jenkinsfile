@@ -4,6 +4,7 @@ pipeline {
 
     environment {
         PROJECT_REPOSITORY_DIRECTORY = "eCommerce"
+        APPLICATION_WAR_FILE = "target/ecommerce-0.0.1.war"
         APPLICATION_CONTEXT = "$WORKSPACE/$PROJECT_REPOSITORY_DIRECTORY"
     }
 
@@ -100,6 +101,16 @@ pipeline {
 
                     if ( deploy_application == true ) {
                         // Deploy
+                        docker.image("maven:3.6.3-openjdk-8-slim").inside() {
+                            sh """
+                                #!/bin/bash
+                                mvn package
+
+                                cd $APPLICATION_CONTEXT
+                                curl --upload-file $APPLICATION_WAR_FILE "http://${TOMCAT_USER}:${TOMCAT_PASSWORD}@{TOMCAT_ADDRESS}:${TOMCAT_PORT}/manager/text/deploy?path=/&update=true"
+
+                            """
+                        }
                     }
 
                 }   // Script
