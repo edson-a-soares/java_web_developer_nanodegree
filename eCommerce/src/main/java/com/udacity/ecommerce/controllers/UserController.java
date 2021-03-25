@@ -17,6 +17,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import com.udacity.ecommerce.model.persistence.repositories.UserRepository;
 import com.udacity.ecommerce.model.persistence.repositories.CartRepository;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
@@ -36,13 +38,26 @@ public class UserController {
 
 	@GetMapping("/id/{id}")
 	public ResponseEntity<User> findById(@PathVariable Long id) {
-		return ResponseEntity.of(userRepository.findById(id));
+		Optional<User> user = userRepository.findById(id);
+		if(!user.isPresent()) {
+			log.info("UserController | findById | User Not Found. id " + id);
+			return ResponseEntity.notFound().build();
+		} else {
+			log.info("UserController | findById | User Found. id " + id);
+			return ResponseEntity.ok(user.get());
+		}
 	}
 
 	@GetMapping("/{username}")
 	public ResponseEntity<User> findByUsername(@PathVariable String username) {
 		User user = userRepository.findByUsername(username);
-		return user == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(user);
+		if(user == null) {
+			log.info("UserController | findByUsername | User Not Found. username.: " + username);
+			return ResponseEntity.notFound().build();
+		} else {
+			log.info("UserController | findByUsername | User Found. username.: " + username);
+			return ResponseEntity.ok(user);
+		}
 	}
 
 	@PostMapping("/create")
@@ -56,7 +71,7 @@ public class UserController {
 
 		if (!meetsTheRequirements(createUserRequest.getPassword()) ||
 			!createUserRequest.getPassword().equals(createUserRequest.getConfirmPassword())) {
-			log.info("INFO", "UserController | CreateUser | Password did not meet minimum requirements.");
+			log.info("UserController | CreateUser | Password did not meet minimum requirements.");
 			return ResponseEntity.badRequest().build();
 		}
 
@@ -64,7 +79,7 @@ public class UserController {
 		userRepository.save(user);
 
 		user.setPassword(null);
-		log.info("INFO", "UserController | CreateUser | Success: | username: " + user.getUsername());
+		log.info("UserController | CreateUser | Success: | username: " + user.getUsername());
 		return ResponseEntity.ok(user);
 	}
 

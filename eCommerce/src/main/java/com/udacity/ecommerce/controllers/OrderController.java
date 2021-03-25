@@ -32,14 +32,14 @@ public class OrderController {
 	public ResponseEntity<UserOrder> submit(@PathVariable String username) {
 		User user = userRepository.findByUsername(username);
 		if(user == null) {
-			log.warn("WARN", "OrderController | submit | Missing username.");
+			log.warn("OrderController | submit | Missing username.");
 			return ResponseEntity.notFound().build();
 		}
 
 		UserOrder order = UserOrder.createFromCart(user.getCart());
 		orderRepository.save(order);
 
-		log.info("INFO", "OrderController | submit | Success from username : " + username);
+		log.info("OrderController | submit | Success from username : " + username);
 		return ResponseEntity.ok(order);
 	}
 
@@ -47,11 +47,11 @@ public class OrderController {
 	public ResponseEntity<List<UserOrder>> getOrdersForUser(@PathVariable String username) {
 		User user = userRepository.findByUsername(username);
 		if(user == null) {
-			log.warn("WARN", "OrderController | getOrdersForUser | Missing username.");
+			log.warn("OrderController | getOrdersForUser | Missing username.");
 			return ResponseEntity.notFound().build();
 		}
 
-		log.info("INFO", "OrderController | getOrdersForUser | Order listed from username : " + username);
+		log.info("OrderController | getOrdersForUser | Order listed from username : " + username);
 		return ResponseEntity.ok(orderRepository.findByUser(user));
 	}
 
