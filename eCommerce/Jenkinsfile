@@ -1,6 +1,8 @@
 pipeline {
 
-    agent any
+    agent {
+        docker { image 'maven:3.6.3-openjdk-8-slim' }
+    }
 
     environment {
         PROJECT_REPOSITORY_DIRECTORY = "eCommerce"
@@ -28,9 +30,7 @@ pipeline {
             steps {
 
                 script {
-                    docker.image("maven:3.6.3-openjdk-8-slim").inside() {
-                        sh 'cd $APPLICATION_CONTEXT && mvn -B -DskipTests clean package'
-                    }
+                    sh 'cd $APPLICATION_CONTEXT && mvn -B -DskipTests clean package'
                 }
 
             }
@@ -42,9 +42,7 @@ pipeline {
             steps {
 
                 script {
-                    docker.image("maven:3.6.3-openjdk-8-slim").inside() {
-                        sh 'cd $APPLICATION_CONTEXT && mvn clean test cobertura:cobertura -Dcobertura.report.format=xml'
-                    }
+                    sh 'cd $APPLICATION_CONTEXT && mvn clean test cobertura:cobertura -Dcobertura.report.format=xml'
                 }
 
             }
@@ -59,10 +57,6 @@ pipeline {
         }
 
         stage ('Deploy') {
-
-            environment {
-              // TOMCAT_IP = sh(script: "", returnStdout: true)
-            }
 
             steps {
 
@@ -104,20 +98,14 @@ pipeline {
                     }
 
                     if ( deploy_application == true ) {
-                        // Deploy
-                        docker.image("maven:3.6.3-openjdk-8-slim").inside() {
-                            sh """
-                                #!/bin/bash
-                                cd $APPLICATION_CONTEXT
-                                mvn -B -DskipTests clean package
-                            """
-                        }
+                        // Deploying the application
+                        sh 'cd $APPLICATION_CONTEXT && mvn clean package'
 
                         deploy adapters: [
-                            tomcat9(url: 'http://localhost:8080',
+                            tomcat9(url: 'http://udacity-tomcat:8080',
                             credentialsId: 'tomcat')
                         ],
-                            war: 'target/*.war',
+                            war: 'eCommerce/target/*.war',
                             contextPath: '/'
 
                     }
