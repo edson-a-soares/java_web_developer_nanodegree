@@ -10,6 +10,8 @@ jenkins:
       permissions:
         - "Overall/Administer:ecommerce"
         - "Overall/Read:anonymous"
+        - "Job/Read:anonymous"
+        - "View/Read:anonymous"
 #      remotingSecurity:
 #        enabled: true
 #    security:
@@ -17,6 +19,16 @@ jenkins:
 #        authenticators:
 #          - global:
 #              strategy: triggeringUsersAuthorizationStrategy
+credentials:
+  system:
+    domainCredentials:
+      - credentials:
+          - usernamePassword:
+              id: "tomcat"
+              username: ${TOMCAT_USER}
+              password: ${TOMCAT_PASSWORD}
+              description: "Tomcat credentials for deployment."
+              scope: GLOBAL
 unclassified:
   location:
     url: http://127.0.0.1:8080

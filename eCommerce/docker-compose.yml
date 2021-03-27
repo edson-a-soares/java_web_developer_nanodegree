@@ -15,6 +15,8 @@ services:
 #        splunk-url: https://172.20.0.4:8088
 #        splunk-token: ""
 #        splunk-insecureskipverify: 'true'
+    networks:
+      - cluster
 
   splunk:
     environment:
@@ -29,6 +31,8 @@ services:
       - 8088:8088
       - 9997:9997
     restart: always
+    networks:
+      - cluster
 
   jenkins:
     build:
@@ -42,9 +46,13 @@ services:
       JENKINS_PASSWORD: udacity
       TOMCAT_USER: udacity
       TOMCAT_PASSWORD: ecommerce
-      TOMCAT_ADDRESS: udacity-tomcat
-      TOMCAT_PORT: 8080
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     ports:
       - 9000:8080
+    networks:
+      - cluster
+
+networks:
+  cluster:
+    driver: bridge
